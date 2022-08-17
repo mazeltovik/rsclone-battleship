@@ -70,7 +70,7 @@ class App {
     this.replaceHash();
     App.container.append(
       this.header.render(),
-      App.renderNewPage('single-player-page'),
+      App.renderNewPage('menu-page'),
       this.footer.render()
     );
     this.enableRouteChange();
