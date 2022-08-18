@@ -6,6 +6,7 @@ import MultiPlayerPage from "../pages/multiplayer/multiplayerPage";
 import ErrorPage from "../pages/error/errorPage";
 import Header from "../core/components/header/header";
 import Footer from "../core/components/footer/footer";
+import Burger from "../core/components/header/burger/burger";
 
 export const enum PageIds {
   MenuPageId = 'menu-page',
@@ -17,14 +18,16 @@ export const enum PageIds {
 class App {
   private static container: HTMLElement = document.body;
   private static currentPageId: string = 'current-page';
-  private initialPage: MenuPage;
+  // private initialPage: MenuPage;
   private header: Header;
   private footer: Footer;
+  private burger: Burger;
 
   constructor() {
-    this.initialPage = new MenuPage('menu-page');
+    // this.initialPage = new MenuPage('menu-page');
     this.header = new Header('header', 'header-container');
     this.footer = new Footer('footer', 'footer-container');
+    this.burger = new Burger();
   }
 
   private replaceHash() {
@@ -37,6 +40,8 @@ class App {
       const oldCurrentPage = <Element>document.querySelector('#current-page')
       const newCurrentPage = App.renderNewPage(hash);
       (oldCurrentPage.parentNode as Element).replaceChild(newCurrentPage, oldCurrentPage);
+      if(hash === 'menu-page') Page.gameModeStatusChange('remove');
+      else Page.gameModeStatusChange('add');
     })
   }
 
@@ -73,6 +78,7 @@ class App {
       App.renderNewPage('menu-page'),
       this.footer.render()
     );
+    this.burger.burgerHandler();
     this.enableRouteChange();
   }
 }

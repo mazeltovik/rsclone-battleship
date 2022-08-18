@@ -1,0 +1,6 @@
+#current-page {
+  height: calc(100vh - 40px);
+  &.current-page_game-mode {
+    height: calc(100vh - 100px);
+  }
+}
