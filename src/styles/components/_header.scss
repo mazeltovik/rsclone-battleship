@@ -1,0 +1,75 @@
+.header-container {
+  height: 0px;
+  &.header-container_game-mode {
+    height: 40px;
+  }
+}
+.header-container__menu {
+  height: 300px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: calc(50% - 100px);
+  left: calc(50% - 150px);
+  // transition-delay: 0.3s;
+  z-index: 1;
+  &.header-container__menu_game-mode {
+    // transition: 0.3s;
+    top: -100%;
+    left: 0;
+  }
+  &.header-container__menu_active {
+    top: 0;
+  }
+}
+.header-container__burger {
+  display: none;
+  position: relative;
+  width: 30px;
+  height: 20px;
+  left: 10px;
+  top: 5px;
+  z-index: 2;
+  span {
+    position: absolute;
+    background-color: black;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    top: 9px;
+    transition: 0.3s;
+  }
+  &.header-container__burger_active span {
+    transform: scale(0);
+  }
+  &::before,
+  &::after {
+    content: "";
+    background-color: black;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    left: 0;
+    transition: 0.3s;
+  }
+  &::before {
+    top: 0;
+  }
+  &::after {
+    bottom: 0;
+  }
+  &.header-container__burger_active::before {
+    transform: rotate(45deg);
+    top: 9px;
+  }
+  &.header-container__burger_active::after {
+    transform: rotate(-45deg);
+    bottom: 9px;
+  }
+}
+// .header-container__burger
+.header-container__burger_game-mode {
+  display: block;
+}

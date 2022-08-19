@@ -1,2 +1,6 @@
+import "./main.scss"
+import App from "./scripts/app/app";
 
-console.log('** Start RSClone **');
+const app = new App();
+
+app.run();
