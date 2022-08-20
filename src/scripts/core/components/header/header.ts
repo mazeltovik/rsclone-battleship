@@ -86,19 +86,13 @@ class Header extends Component {
   private createMenu() {
     const pageMenuButtons = document.createElement('div');
     pageMenuButtons.classList.add('header-container__menu');
-    // menuButtons.forEach((button) => {
-    //   const buttonHTML = document.createElement('a');
-    //   buttonHTML.href = `#${button.id}`;
-    //   buttonHTML.innerText = button.text;
-    //   buttonHTML.classList.add('menu__item')
-    //   pageMenuButtons.append(buttonHTML);
-    // });
-    menuButtons.forEach((button) => {
+    menuButtons.forEach((button, index) => {
       const buttonHTML = document.createElement('button');
-      pageMenuButtons.append(buttonHTML);
+      if (index === 0) buttonHTML.disabled = true;
       buttonHTML.id = `${button.id}-button`;
       buttonHTML.innerText = button.text;
       buttonHTML.classList.add('menu__button');
+      pageMenuButtons.append(buttonHTML);
     });
     this.createPopUpElements(pageMenuButtons);
     return pageMenuButtons;
@@ -109,14 +103,15 @@ class Header extends Component {
     const popUpConfirm = <Element>document.querySelector('.pop-up-confirm');
     menuButtons.forEach((button) => {
       button.addEventListener('click', (event) => {
-        console.log((event.target as Element).id)
         popUpConfirm.classList.add('pop-up-confirm_active');
-        Header.popUpYesNoListeners(popUpConfirm, ((event.target as Element).id.slice(0, -7)));
+        Header.popUpYesNoListeners(popUpConfirm, ((event.target as Element).id), menuButtons);
+        if ((menuButtons[0] as HTMLButtonElement).disabled === true)
+          (document.querySelector('.pop-up-confirm__button-yes') as HTMLButtonElement).click();
       });
     });
   }
 
-  private static popUpYesNoListeners(target: Element, id: string) {
+  private static popUpYesNoListeners(target: Element, id: string, buttons: NodeListOf<Element>) {
     const buttonYes = <Element>document.querySelector('.pop-up-confirm__button-yes');
     const buttonNo = <Element>document.querySelector('.pop-up-confirm__button-no');
     const headerContainerMenu = <Element>document.querySelector('.header-container__menu');
@@ -126,8 +121,11 @@ class Header extends Component {
       headerContainerBurger.classList.remove('header-container__burger_active');
       buttonNo.removeEventListener('click', noHandler);
       target.classList.remove('pop-up-confirm_active');
-      history.replaceState(null, 'null', `#${id}`);
-      window.dispatchEvent(new HashChangeEvent("hashchange"));
+      history.replaceState(null, 'null', `#${id.slice(0, -7)}`);
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+      buttons.forEach((button) => button.id === id ?
+        (button as HTMLButtonElement).disabled = true :
+        (button as HTMLButtonElement).disabled = false);
     };
     const noHandler = () => {
       buttonYes.removeEventListener('click', yesHandler);
