@@ -77,6 +77,7 @@ class App {
       this.footer.render()
     );
     this.burger.burgerHandler();
+    Header.popUpElementsListeners();
     this.enableRouteChange();
   }
 }
