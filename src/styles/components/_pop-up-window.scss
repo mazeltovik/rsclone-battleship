@@ -1,9 +1,5 @@
 .pop-up-window {
-  width: 0;
-  height: 0;
-  top: 50%;
-  left: 50%;
-  position: absolute;
+  @include popup-base-position();
   transition: 0.3s;
   background-color: white;
   z-index: 1;

@@ -1,0 +1,10 @@
+.pop-up-confirm {
+  // @include popup-base-position();
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+  width: 100px;
+  height: 100px;
+  z-index: 2;
+  background: blueviolet;
+}

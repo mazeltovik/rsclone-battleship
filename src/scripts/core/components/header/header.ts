@@ -51,7 +51,7 @@ class Header extends Component {
     document.body.append(popUpWindow);
   }
 
-  private static openPopUp() {
+  private static openPopUpWindow() {
     const targets: { [key: string]: Element } = {
       options: <Element>document.querySelector('.menu__options'),
       achives: <Element>document.querySelector('.menu__achives'),
@@ -66,7 +66,7 @@ class Header extends Component {
     }
   }
 
-  private static closePopUp() {
+  private static closePopUpWindow() {
     const popUpWindow = document.querySelector('.pop-up-window')
     document.body.addEventListener('mousedown', (event) => {
       if (!(event.target === popUpWindow)
@@ -76,8 +76,9 @@ class Header extends Component {
 
   static popUpElementsListeners() {
     Header.createPopUpWindow();
-    Header.openPopUp();
-    Header.closePopUp();
+    Header.openPopUpWindow();
+    Header.closePopUpWindow();
+    Header.createPopUpConfirm();
   }
 
   private createMenu() {
@@ -92,6 +93,12 @@ class Header extends Component {
     });
     this.createPopUpElements(pageMenuButtons);
     return pageMenuButtons;
+  }
+
+  private static createPopUpConfirm() {
+    const popUpConfirm = document.createElement('div');
+    popUpConfirm.classList.add('pop-up-confirm');
+    document.body.append(popUpConfirm)
   }
 
   private createBurger() {
