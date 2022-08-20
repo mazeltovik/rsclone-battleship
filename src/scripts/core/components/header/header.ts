@@ -97,7 +97,17 @@ class Header extends Component {
 
   private static createPopUpConfirm() {
     const popUpConfirm = document.createElement('div');
+    const warning = document.createElement('p');
+    const buttonYes = document.createElement('button');
+    const buttonNo = document.createElement('button');
+    warning.innerHTML = 'Do you really want to leave?<br> All progress will be lost!';
+    warning.classList.add('pop-up-confirm__text')
+    buttonYes.innerText = 'Yes';
+    buttonYes.classList.add('pop-up-confirm__button-yes')
+    buttonNo.innerText = 'No';
+    buttonNo.classList.add('pop-up-confirm__button-no')
     popUpConfirm.classList.add('pop-up-confirm');
+    popUpConfirm.append(warning, buttonYes, buttonNo);
     document.body.append(popUpConfirm)
   }
 

@@ -4,8 +4,5 @@
 }
 @mixin popup-base-position() {
   position: absolute;
-  width: 0;
-  height: 0;
-  top: 50%;
-  left: 50%;
+  transform: scale(0);
 }

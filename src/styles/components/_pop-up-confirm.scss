@@ -1,10 +1,42 @@
 .pop-up-confirm {
-  // @include popup-base-position();
-  position: absolute;
-  top: calc(50% - 50px);
-  left: calc(50% - 50px);
-  width: 100px;
+  @include popup-base-position();
+
+  top: calc(50% - 35px);
+  left: calc(50% - 100px);
+  width: 200px;
   height: 100px;
+  // transform: scale(1);
   z-index: 2;
-  background: blueviolet;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "text text"
+    "button-yes button-no";
+  background: white;
+  border: 2px solid black;
+  &__text {
+    grid-area: text;
+    text-align: center;
+    line-height: 25px;
+  }
+  &__button-yes,
+  &__button-no {
+    height: 30px;
+    width: 70px;
+    align-self: center;
+    justify-self: center;
+    background: white;
+    border: 2px solid black;
+    transition: 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  &__button-yes {
+    grid-area: button-yes;
+  }
+  &__button-no {
+    grid-area: button-no;
+  }
 }
