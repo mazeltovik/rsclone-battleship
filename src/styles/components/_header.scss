@@ -1,7 +1,7 @@
 .header-container {
   height: 0px;
   &.header-container_game-mode {
-    height: 40px;
+    height: $header-height;
   }
 }
 .header-container__menu {
