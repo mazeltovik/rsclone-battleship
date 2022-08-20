@@ -13,10 +13,8 @@
   position: absolute;
   top: calc(50% - 100px);
   left: calc(50% - 150px);
-  // transition-delay: 0.3s;
   z-index: 1;
   &.header-container__menu_game-mode {
-    // transition: 0.3s;
     top: -100%;
     left: 0;
   }
@@ -69,7 +67,6 @@
     bottom: 9px;
   }
 }
-// .header-container__burger
 .header-container__burger_game-mode {
   display: block;
 }
