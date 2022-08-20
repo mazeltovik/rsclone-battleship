@@ -84,13 +84,20 @@ class Header extends Component {
   private createMenu() {
     const pageMenuButtons = document.createElement('div');
     pageMenuButtons.classList.add('header-container__menu');
-    menuButtons.forEach((button) => {
-      const buttonHTML = document.createElement('a');
-      buttonHTML.href = `#${button.id}`;
-      buttonHTML.innerText = button.text;
-      buttonHTML.classList.add('menu__item')
-      pageMenuButtons.append(buttonHTML);
-    });
+    // menuButtons.forEach((button) => {
+    //   const buttonHTML = document.createElement('a');
+    //   buttonHTML.href = `#${button.id}`;
+    //   buttonHTML.innerText = button.text;
+    //   buttonHTML.classList.add('menu__item')
+    //   pageMenuButtons.append(buttonHTML);
+    // });
+  menuButtons.forEach((button) => {
+    const buttonHTML = document.createElement('button');
+    pageMenuButtons.append(buttonHTML);
+    buttonHTML.id = `${button.id}-button`;
+    buttonHTML.innerText = button.text;
+    buttonHTML.classList.add('menu__button');
+  });
     this.createPopUpElements(pageMenuButtons);
     return pageMenuButtons;
   }
