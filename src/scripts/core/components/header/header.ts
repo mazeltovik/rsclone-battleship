@@ -4,6 +4,7 @@ import options from "../../../../assets/svg/options.svg";
 import achives from "../../../../assets/svg/achives.svg";
 import leaderboard from "../../../../assets/svg/leaderboard.svg";
 import close from "../../../../assets/svg/close.svg";
+import { Console } from "console";
 const obj: { [key: string]: string } = {
   options,
   achives,
@@ -79,6 +80,7 @@ class Header extends Component {
     Header.openPopUpWindow();
     Header.closePopUpWindow();
     Header.createPopUpConfirm();
+    Header.addMenuButtonsListeners();
   }
 
   private createMenu() {
@@ -91,15 +93,48 @@ class Header extends Component {
     //   buttonHTML.classList.add('menu__item')
     //   pageMenuButtons.append(buttonHTML);
     // });
-  menuButtons.forEach((button) => {
-    const buttonHTML = document.createElement('button');
-    pageMenuButtons.append(buttonHTML);
-    buttonHTML.id = `${button.id}-button`;
-    buttonHTML.innerText = button.text;
-    buttonHTML.classList.add('menu__button');
-  });
+    menuButtons.forEach((button) => {
+      const buttonHTML = document.createElement('button');
+      pageMenuButtons.append(buttonHTML);
+      buttonHTML.id = `${button.id}-button`;
+      buttonHTML.innerText = button.text;
+      buttonHTML.classList.add('menu__button');
+    });
     this.createPopUpElements(pageMenuButtons);
     return pageMenuButtons;
+  }
+
+  private static addMenuButtonsListeners() {
+    const menuButtons = document.querySelectorAll('.menu__button');
+    const popUpConfirm = <Element>document.querySelector('.pop-up-confirm');
+    menuButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        console.log((event.target as Element).id)
+        popUpConfirm.classList.add('pop-up-confirm_active');
+        Header.popUpYesNoListeners(popUpConfirm, ((event.target as Element).id.slice(0, -7)));
+      });
+    });
+  }
+
+  private static popUpYesNoListeners(target: Element, id: string) {
+    const buttonYes = <Element>document.querySelector('.pop-up-confirm__button-yes');
+    const buttonNo = <Element>document.querySelector('.pop-up-confirm__button-no');
+    const headerContainerMenu = <Element>document.querySelector('.header-container__menu');
+    const headerContainerBurger = <Element>document.querySelector('.header-container__burger');
+    const yesHandler = () => {
+      headerContainerMenu.classList.remove('header-container__menu_active');
+      headerContainerBurger.classList.remove('header-container__burger_active');
+      buttonNo.removeEventListener('click', noHandler);
+      target.classList.remove('pop-up-confirm_active');
+      history.replaceState(null, 'null', `#${id}`);
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    };
+    const noHandler = () => {
+      buttonYes.removeEventListener('click', yesHandler);
+      target.classList.remove('pop-up-confirm_active');
+    };
+    buttonYes.addEventListener('click', yesHandler, { once: true });
+    buttonNo.addEventListener('click', noHandler, { once: true });
   }
 
   private static createPopUpConfirm() {

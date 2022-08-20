@@ -1,11 +1,9 @@
 .pop-up-confirm {
   @include popup-base-position();
-
   top: calc(50% - 35px);
   left: calc(50% - 100px);
   width: 200px;
   height: 100px;
-  // transform: scale(1);
   z-index: 2;
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -15,6 +13,10 @@
     "button-yes button-no";
   background: white;
   border: 2px solid black;
+  transition: 0.3s;
+  &_active {
+    transform: scale(1);
+  }
   &__text {
     grid-area: text;
     text-align: center;
