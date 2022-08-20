@@ -21,6 +21,15 @@
   &.header-container__menu_active {
     top: 0;
   }
+  .menu__options,
+  .menu__achives,
+  .menu__leaderboard {
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 }
 .header-container__burger {
   display: none;

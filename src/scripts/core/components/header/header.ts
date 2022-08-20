@@ -1,5 +1,13 @@
 import Component from "../../templates/component";
 import { PageIds } from "../../../app/app";
+import options from "../../../../assets/svg/options.svg";
+import achives from "../../../../assets/svg/achives.svg";
+import leaderboard from "../../../../assets/svg/leaderboard.svg";
+const obj: { [key: string]: string } = {
+  options,
+  achives,
+  leaderboard,
+};
 
 const menuButtons = [
   {
@@ -21,8 +29,20 @@ const menuButtons = [
 ];
 
 class Header extends Component {
+  private createPopUpElements(target: HTMLElement) {
+    const elements = ['options', 'achives', 'leaderboard'];
+    elements.forEach((element) => {
+      const button = document.createElement('img');
+      button.src = obj[element];
+      button.width = 40;
+      button.classList.add(`menu__${element}`);
+      target.append(button);
+    });
+  }
+
   private createMenu() {
     const pageMenuButtons = document.createElement('div');
+    pageMenuButtons.classList.add('header-container__menu');
     menuButtons.forEach((button) => {
       const buttonHTML = document.createElement('a');
       buttonHTML.href = `#${button.id}`;
@@ -30,7 +50,7 @@ class Header extends Component {
       buttonHTML.classList.add('menu__item')
       pageMenuButtons.append(buttonHTML);
     });
-    pageMenuButtons.classList.add('header-container__menu');
+    this.createPopUpElements(pageMenuButtons);
     return pageMenuButtons;
   }
 
