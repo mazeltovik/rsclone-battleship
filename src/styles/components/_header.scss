@@ -7,19 +7,38 @@
 .header-container__menu {
   height: 250px;
   width: 200px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-items: center;
   position: absolute;
   top: calc(50% - 125px);
   left: calc(50% - 100px);
   z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-areas:
+    "menu-page-button menu-page-button menu-page-button"
+    "classic-page-butto classic-page-butto classic-page-butto"
+    "single-player-page-button single-player-page-button single-player-page-button"
+    "multi-player-page-button multi-player-page-button multi-player-page-button"
+    "menu-options menu-achives menu-leaderboard";
   &.header-container__menu_game-mode {
     top: -100%;
     left: 0;
   }
   &.header-container__menu_active {
     top: 0;
+  }
+  .menu__button {
+    font-size: 1.5rem;
+    background: white;
+    width: 170px;
+    height: 40px;
+    border: 2px solid black;
+    transition: 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
   .menu__options,
   .menu__achives,
@@ -29,6 +48,27 @@
     &:hover {
       transform: scale(1.1);
     }
+  }
+  #menu-page-button {
+    grid-area: menu-page-button;
+  }
+  #classic-page-button {
+    grid-area: classic-page-butto;
+  }
+  #single-player-page-button {
+    grid-area: single-player-page-button;
+  }
+  #multi-player-page-button {
+    grid-area: multi-player-page-button;
+  }
+  .menu__options {
+    grid-area: menu-options;
+  }
+  .menu__achives {
+    grid-area: menu-achives;
+  }
+  .menu__leaderboard {
+    grid-area: menu-leaderboard;
   }
 }
 .header-container__burger {

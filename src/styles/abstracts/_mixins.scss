@@ -1,4 +1,8 @@
 @mixin flex($direction: row) {
-    display: flex;
-    flex-direction: $direction;
+  display: flex;
+  flex-direction: $direction;
+}
+@mixin popup-base-position() {
+  position: absolute;
+  transform: scale(0);
 }
