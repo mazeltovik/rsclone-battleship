@@ -20,7 +20,6 @@
         "no-debugger": "off",
         "no-console": 0,
         "class-methods-use-this": "off",
-        "@typescript-eslint/rule-name": "error",
         "@typescript-eslint/no-var-requires": "off",
         "prettier/prettier": ["error", { "endOfLine": "auto" }]}
 }
