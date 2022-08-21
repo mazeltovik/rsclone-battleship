@@ -1,27 +1,34 @@
 .header-container {
   height: 0px;
   &.header-container_game-mode {
-    height: 40px;
+    height: $header-height;
   }
 }
 .header-container__menu {
-  height: 300px;
+  height: 250px;
   width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: calc(50% - 100px);
-  left: calc(50% - 150px);
-  // transition-delay: 0.3s;
+  top: calc(50% - 125px);
+  left: calc(50% - 100px);
   z-index: 1;
   &.header-container__menu_game-mode {
-    // transition: 0.3s;
     top: -100%;
     left: 0;
   }
   &.header-container__menu_active {
     top: 0;
+  }
+  .menu__options,
+  .menu__achives,
+  .menu__leaderboard {
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
 .header-container__burger {
@@ -69,7 +76,6 @@
     bottom: 9px;
   }
 }
-// .header-container__burger
 .header-container__burger_game-mode {
   display: block;
 }

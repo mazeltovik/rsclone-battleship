@@ -18,13 +18,11 @@ export const enum PageIds {
 class App {
   private static container: HTMLElement = document.body;
   private static currentPageId: string = 'current-page';
-  // private initialPage: MenuPage;
   private header: Header;
   private footer: Footer;
   private burger: Burger;
 
   constructor() {
-    // this.initialPage = new MenuPage('menu-page');
     this.header = new Header('header', 'header-container');
     this.footer = new Footer('footer', 'footer-container');
     this.burger = new Burger();
@@ -79,6 +77,7 @@ class App {
       this.footer.render()
     );
     this.burger.burgerHandler();
+    Header.popUpElementsListeners();
     this.enableRouteChange();
   }
 }
