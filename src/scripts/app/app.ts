@@ -40,6 +40,11 @@ class App {
             (oldCurrentPage.parentNode as Element).replaceChild(newCurrentPage, oldCurrentPage);
             if (hash === 'menu-page') Page.gameModeStatusChange('remove');
             else Page.gameModeStatusChange('add');
+            switch (hash) {
+                case 'classic-page':
+                    ClassicPage.createGame();
+                    break;
+            }
         });
     }
 
