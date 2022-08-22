@@ -39,6 +39,10 @@
     &:hover {
       transform: scale(1.1);
     }
+    &:disabled:hover {
+      transform: scale(1);
+      cursor: default;
+    }
   }
   .menu__options,
   .menu__achives,
