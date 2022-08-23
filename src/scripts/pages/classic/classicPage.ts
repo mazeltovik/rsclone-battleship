@@ -158,76 +158,48 @@ class ClassicPage extends Page {
                     let newNotAllowedVertical = notAllowedVertical.splice(0, 10 * lastShipIndex);
                     let selectedShipIndex = parseInt(selectedShipNameWithIndex.slice(-1));
                     shipLastId = shipLastId - selectedShipIndex;
+                    const allowCheck = (length: string, lastIndex: number, type: 'horizontal' | 'vertical') => {
+                        let allow = true;
+                        const typeFactor = type === 'horizontal' ? 1 : 10;
+                        for (let i = 0; i < Number(length); i++) if (set.has(lastIndex - i * typeFactor)) allow = false;
+                        return allow;
+                    };
                     if (
-                        isHorizontal &&
+                        (isHorizontal || (!isHorizontal && Number(draggedShipLength) === 1)) &&
                         !newNotAllowedHorizontal.includes(shipLastId) &&
-                        !set.has(Number(this.dataset.id))
+                        allowCheck(draggedShipLength, shipLastId, 'horizontal')
                     ) {
                         for (let i = 0; i < Number(draggedShipLength); i++) {
-                            const filterHorizontal = (newId: number, id: number) =>
-                                (newId - 9) % 10 === 0 || newId % 10 === 0 ? id : newId;
-
                             const id = parseInt(String(this.dataset.id)) - selectedShipIndex + i;
-                            console.log(id);
+                            const filterHorizontal = (
+                                id: number,
+                                index: number,
+                                draggedShipLength: string
+                            ): Array<number> => {
+                                const arr: Array<number> = [];
+                                if (Number(draggedShipLength) === 1) {
+                                    if (id % 10 === 0) arr.push(id + 10, id - 10, id + 1, id + 11, id - 9);
+                                    else if ((id - 9) % 10 === 0) arr.push(id + 10, id - 10, id - 1, id - 11, id + 9);
+                                    else arr.push(id + 10, id - 10, id + 1, id + 11, id - 9, id - 1, id - 11, id + 9);
+                                } else if (
+                                    (index === 0 && id % 10 === 0) ||
+                                    (index === Number(draggedShipLength) - 1 && (id - 9) % 10 === 0) ||
+                                    (index > 0 && index < Number(draggedShipLength) - 1)
+                                ) {
+                                    arr.push(id - 10, id + 10);
+                                } else if (index === 0) {
+                                    arr.push(id - 10, id + 10, id - 1, id - 11, id + 9);
+                                } else if (index === Number(draggedShipLength) - 1) {
+                                    arr.push(id - 10, id + 10, id + 1, id + 11, id - 9);
+                                }
+                                return arr;
+                            };
                             set.add(id);
-                            if (i === 0) {
-                                set.add(filterHorizontal(id + 10, id));
-                                console.log(filterHorizontal(id + 10, id));
-                                set.add(filterHorizontal(id - 10, id));
-                                set.add(filterHorizontal(id - 1, id));
-                                set.add(filterHorizontal(id - 11, id));
-                                set.add(filterHorizontal(id + 9, id));
-                            }
+                            filterHorizontal(id, i, draggedShipLength).forEach((value) => set.add(value));
                             set.forEach((v) => {
                                 ClassGame.addRedClass(Number(v));
                             });
-                            /////////////////////////////////////////////
-                            // let id1 = parseInt(String(this.dataset.id)) - selectedShipIndex + i + 1;
-                            // set.add(id1);
-                            // ClassGame.addRedClass(id1);
-                            // // let id2 = parseInt(String(this.dataset.id)) - selectedShipIndex + i + 2;
-                            // // set.add(id2);
-                            // // ClassGame.addRedClass(id2);
-                            // // ////////////////////////////////////////////////////////
-                            // let id3 = parseInt(String(this.dataset.id)) - selectedShipIndex + i - 2;
-                            // set.add(id3);
-                            // ClassGame.addRedClass(id3);
-                            // ///////////////////////////////////////////////////////
-                            // let id4 = parseInt(String(this.dataset.id)) - selectedShipIndex + i - 1;
-                            // set.add(id4);
-                            // ClassGame.addRedClass(id4);
-                            // //////////////////////////////////////////////////////////
-                            // let id5 = parseInt(String(this.dataset.id)) - selectedShipIndex + i - 1;
-                            // set.add(id5);
-                            // ClassGame.addRedClass(id5);
-                            // /////////////////////////////////////////////////////////
-                            // let id6 = parseInt(String(this.dataset.id)) - selectedShipIndex + i - 1;
-                            // set.add(id6);
-                            // ClassGame.addRedClass(id6);
-                            // /////////////////////////////////////////////////////////
-                            // let id7 = parseInt(String(this.dataset.id)) - selectedShipIndex + i + 10;
-                            // set.add(id7);
-                            // ClassGame.addRedClass(id7);
-                            // /////////////////////////////////////
-                            // let id8 = parseInt(String(this.dataset.id)) - selectedShipIndex + i - 10;
-                            // set.add(id8);
-                            // ClassGame.addRedClass(id8);
-                            // /////////////////////////////////////////////
-                            // let id9 = parseInt(String(this.dataset.id)) - selectedShipIndex + i + 9;
-                            // set.add(id9);
-                            // ClassGame.addRedClass(id9);
-                            // //////////////////////////////////////////////////
-                            // let id10 = parseInt(String(this.dataset.id)) - selectedShipIndex + i - 9;
-                            // set.add(id10);
-                            // // ClassGame.addRedClass(id10);
-                            // //////////////////////////////////////////////
-                            // let id11 = parseInt(String(this.dataset.id)) - selectedShipIndex + i + 11;
-                            // set.add(id11);
-                            // ClassGame.addRedClass(id11);
-                            // //////////////////////////////////////////////////
-                            // let id12 = parseInt(String(this.dataset.id)) - selectedShipIndex + i - 11;
-                            // set.add(id12);
-                            // ClassGame.addRedClass(id12);
+
                             console.log(set);
                             let directionClass: string = 'nope';
                             if (Number(draggedShipLength) == 1) {
@@ -251,32 +223,38 @@ class ClassicPage extends Page {
                     } else if (
                         !isHorizontal &&
                         !newNotAllowedVertical.includes(shipLastId) &&
-                        !set.has(Number(this.dataset.id))
+                        allowCheck(draggedShipLength, shipLastId, 'vertical')
                     ) {
                         for (let i = 0; i < Number(draggedShipLength); i++) {
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i - 9);
-                            // ///////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i - 19);
-                            // ////////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i - 29);
-                            // ///////////////////////////////////////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i + 11);
-                            // /////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i + 1);
-                            // /////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i + 2);
-                            // //////////////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i - 10);
-                            // ////////////////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i - 20);
-                            // //////////////////////////////////////////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i);
-                            // /////////////////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i + 2 - 10);
-                            // //////////////////////////////////////////////////////
-                            // set.add(parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i + 2 - 20);
-                            // ////////////////////////////////////////////////
-                            console.log(set);
+                            const id = parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i - 9;
+                            const filterVertical = (
+                                id: number,
+                                index: number,
+                                draggedShipLength: string
+                            ): Array<number> => {
+                                console.log(id, index, draggedShipLength);
+                                const arr: Array<number> = [];
+                                if (id % 10 < 9 && id % 10 > 0) {
+                                    if (index === 0) arr.push(id - 9, id - 10, id - 11);
+                                    else if (index === Number(draggedShipLength) - 1)
+                                        arr.push(id + 9, id + 10, id + 11);
+                                    arr.push(id - 1, id + 1);
+                                } else if (id % 10 === 9) {
+                                    arr.push(id - 1);
+                                    if (index === 0) arr.push(id - 10, id - 11);
+                                    else if (index === Number(draggedShipLength) - 1) arr.push(id + 9, id + 10);
+                                } else if (id % 10 === 0) {
+                                    arr.push(id + 1);
+                                    if (index === 0) arr.push(id - 9, id - 10);
+                                    else if (index === Number(draggedShipLength) - 1) arr.push(id + 10, id + 11);
+                                }
+                                return arr;
+                            };
+                            set.add(id);
+                            filterVertical(id, i, draggedShipLength).forEach((value) => set.add(value));
+                            set.forEach((v) => {
+                                ClassGame.addRedClass(Number(v));
+                            });
                             let directionClass: string = 'nope';
                             if (Number(draggedShipLength) === 1) {
                                 userSquares[parseInt(String(this.dataset.id)) - selectedShipIndex + i].classList.add(
