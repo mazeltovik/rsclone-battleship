@@ -7,6 +7,7 @@ import ErrorPage from '../pages/error/errorPage';
 import Header from '../core/components/header/header';
 import Footer from '../core/components/footer/footer';
 import Burger from '../core/components/header/burger/burger';
+import ClassicGame from '../core/bin/classicGame';
 
 export const enum PageIds {
     MenuPageId = 'menu-page',
@@ -42,7 +43,7 @@ class App {
             else Page.gameModeStatusChange('add');
             switch (hash) {
                 case 'classic-page':
-                    ClassicPage.createGame();
+                    new ClassicGame().build();
                     break;
             }
         });
