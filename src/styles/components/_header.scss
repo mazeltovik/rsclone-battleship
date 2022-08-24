@@ -31,13 +31,17 @@
   }
   .menu__button {
     font-size: 1.5rem;
-    background: white;
+    background: none;
     width: 170px;
     height: 40px;
     border: 2px solid black;
     transition: 0.3s;
     &:hover {
       transform: scale(1.1);
+    }
+    &:disabled:hover {
+      transform: scale(1);
+      cursor: default;
     }
   }
   .menu__options,
