@@ -132,6 +132,7 @@ export default class ClassicGame {
         // console.log('drag leave')
     }
     dragDrop(this: HTMLDivElement) {
+        console.log(ClassicGame.draggedShipLength);
         if (ClassicGame.draggedShip) {
             ClassicGame.lastChildId = (ClassicGame.draggedShip?.lastChild as HTMLDivElement).id;
             let shipNameWithLastId = ClassicGame.lastChildId;
@@ -192,7 +193,6 @@ export default class ClassicGame {
                         ClassicGame.addRedClass(Number(v));
                     });
 
-                    console.log(ClassicGame.set);
                     let directionClass: string = 'nope';
                     if (Number(ClassicGame.draggedShipLength) == 1) {
                         ClassicGame.userField[parseInt(String(this.dataset.id)) - selectedShipIndex + i].classList.add(
@@ -220,7 +220,6 @@ export default class ClassicGame {
                 for (let i = 0; i < Number(ClassicGame.draggedShipLength); i++) {
                     const id = parseInt(String(this.dataset.id)) - selectedShipIndex + 10 * i - 9;
                     const filterVertical = (id: number, index: number, draggedShipLength: string): Array<number> => {
-                        console.log(id, index, draggedShipLength);
                         const arr: Array<number> = [];
                         if (id % 10 < 9 && id % 10 > 0) {
                             if (index === 0) arr.push(id - 9, id - 10, id - 11);
@@ -268,6 +267,7 @@ export default class ClassicGame {
     dragEnd() {
         // console.log('dragend')
     }
+
     build() {
         this.createField(this.userGrid, ClassicGame.userField);
         // Копируем поля пользователя в переменную, тк в обработчике this призваевается event.target
