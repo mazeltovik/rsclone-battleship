@@ -8,6 +8,7 @@ import Header from '../core/components/header/header';
 import Footer from '../core/components/footer/footer';
 import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
+import MultiplayerGame from '../core/bin/multiplayerGame';
 
 export const enum PageIds {
     MenuPageId = 'menu-page',
@@ -44,6 +45,9 @@ class App {
             switch (hash) {
                 case 'classic-page':
                     new ClassicGame().build();
+                    break;
+                case 'multi-player-page':
+                    new MultiplayerGame().build();
                     break;
             }
         });
