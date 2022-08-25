@@ -47,7 +47,7 @@ class App {
                     new ClassicGame().build();
                     break;
                 case 'multi-player-page':
-                    new MultiplayerGame().build();
+                    new MultiplayerGame().start();
                     break;
             }
         });
