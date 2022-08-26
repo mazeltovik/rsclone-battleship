@@ -2,6 +2,23 @@ import SELECTORS from '../../utils/selectors';
 import RandomComputerField from '../logic/RandomComputerField';
 import shipsForClassicGame from '../../utils/ships';
 
+type Options = {
+    [key: string]: number;
+};
+
+type SquadronOptions = {
+    arrDecks: number[][];
+    hits: number;
+    x: number;
+    y: number;
+    kx: number;
+    ky: number;
+};
+
+type Squadron = {
+    [key: string]: SquadronOptions;
+};
+
 enum BasicSettings {
     Width = 10,
 }
@@ -25,10 +42,49 @@ export default class ClassicGame {
     static allShipsPlaced = false;
     static set = new Set();
     static userField: HTMLDivElement[] = [];
+    static matrix: number[][] = [...Array(10)].map(() => Array(10).fill(0));
+    static squadron: Squadron = {};
     // Статический метод для добавления красных полей вокруг кораблей,
     // чтобы показать, в какие поля нельзя ставить корабль
     static addRedClass(id: number) {
         document.querySelector(`[data-id="${id}"]`)?.classList.add('red');
+    }
+    static getDecimial(num: number) {
+        let str = String(num / 10);
+        let pointPos = str.indexOf('.');
+        if (~pointPos) {
+            return +str[`${pointPos + 1}`];
+        }
+        return 0;
+    }
+    static getIntegral(num: number) {
+        return Math.trunc(num / 10);
+    }
+    static makeOption(decks: number, kx: number, ky: number, x: number, y: number) {
+        return {
+            decks: decks,
+            kx: kx,
+            ky: ky,
+            x: x,
+            y: y,
+        };
+    }
+    static createShip(opt: Options) {
+        let { decks, kx, ky, x, y } = opt;
+        let shipName = ClassicGame.draggedShip.id;
+        let k = 0;
+        let arrDecks: number[][] = [];
+        let hits = 0;
+        while (k < decks) {
+            let i = x + k * kx;
+            let j = y + k * ky;
+            ClassicGame.matrix[i][j] = 1;
+            arrDecks.push([i, j]);
+            k++;
+        }
+        ClassicGame.squadron[shipName] = { arrDecks, hits, x, y, kx, ky };
+        console.log(ClassicGame.matrix);
+        console.log(ClassicGame.squadron);
     }
     userGrid;
     computerGrid;
@@ -132,7 +188,15 @@ export default class ClassicGame {
         // console.log('drag leave')
     }
     dragDrop(this: HTMLDivElement) {
-        console.log(ClassicGame.draggedShipLength);
+        //Количество палуб корабля
+        let decks = Number(ClassicGame.draggedShipLength);
+        //Расположение корабля, kx=0 и ky = 1 - корабль расположен горизонтально
+        //  kx=1 и ky = 0 - корабль расположен вертикально
+        let kx = 0;
+        let ky = 0;
+        //координаты корабля
+        let x = 0;
+        let y = 0;
         if (ClassicGame.draggedShip) {
             ClassicGame.lastChildId = (ClassicGame.draggedShip?.lastChild as HTMLDivElement).id;
             let shipNameWithLastId = ClassicGame.lastChildId;
@@ -262,12 +326,38 @@ export default class ClassicGame {
 
             ClassicGame.displayGrid.removeChild(ClassicGame.draggedShip);
             if (!ClassicGame.displayGrid.querySelector('.ship')) ClassicGame.allShipsPlaced = true;
+            if (ClassicGame.isHorizontal) {
+                let idVertical = parseInt(String(this.dataset.id)) - selectedShipIndex;
+                console.log(idVertical);
+                kx = 0;
+                ky = 1;
+                console.log(idVertical);
+                if (idVertical < 10) {
+                    x = 0;
+                    y = ClassicGame.getDecimial(idVertical);
+                } else {
+                    x = ClassicGame.getIntegral(idVertical);
+                    y = ClassicGame.getDecimial(idVertical);
+                }
+            } else {
+                let idHorizontal = parseInt(String(this.dataset.id)) - selectedShipIndex - 9;
+                console.log(idHorizontal);
+                kx = 1;
+                ky = 0;
+                x = ClassicGame.getIntegral(idHorizontal);
+                if (ClassicGame.draggedShipLength === '1') {
+                    x = ClassicGame.getIntegral(parseInt(String(this.dataset.id)) - selectedShipIndex);
+                    y = ClassicGame.getDecimial(parseInt(String(this.dataset.id)) - selectedShipIndex);
+                } else {
+                    y = ClassicGame.getDecimial(idHorizontal);
+                }
+            }
+            ClassicGame.createShip(ClassicGame.makeOption(decks, kx, ky, x, y));
         }
     }
     dragEnd() {
         // console.log('dragend')
     }
-
     build() {
         this.createField(this.userGrid, ClassicGame.userField);
         // Копируем поля пользователя в переменную, тк в обработчике this призваевается event.target

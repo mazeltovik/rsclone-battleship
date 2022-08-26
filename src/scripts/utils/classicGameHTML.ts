@@ -16,16 +16,16 @@ export default function classicGameHTML(elem: HTMLElement) {
 
   <div class="container">
     <div class="grid-display">
-      <div class="ship singleDeck-container" draggable="true"><div id="singleDeck-1"></div></div>
-      <div class="ship singleDeck-container" draggable="true"><div id="singleDeck-0"></div></div>
-      <div class="ship singleDeck-container" draggable="true"><div id="singleDeck-0"></div></div>
-      <div class="ship singleDeck-container" draggable="true"><div id="singleDeck-0"></div></div>
-      <div class="ship doubleDeck-container" draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
-      <div class="ship doubleDeck-container" draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
-      <div class="ship doubleDeck-container" draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
-      <div class="ship tripleDeck-container" draggable="true"><div id="tripleDeck-0"></div><div id="tripleDeck-1"></div><div id="tripleDeck-2"></div></div>
-      <div class="ship tripleDeck-container" draggable="true"><div id="tripleDeck-0"></div><div id="tripleDeck-1"></div><div id="tripleDeck-2"></div></div>
-      <div class="ship fourDeck-container" draggable="true"><div id="fourDeck-0"></div><div id="fourDeck-1"></div><div id="fourDeck-2"></div><div id="fourDeck-3"></div></div>
+      <div class="ship singleDeck-container" id = singledeck1 draggable="true"><div id="singleDeck-0"></div></div>
+      <div class="ship singleDeck-container"  id = singledeck2 draggable="true"><div id="singleDeck-0"></div></div>
+      <div class="ship singleDeck-container"  id = singledeck3 draggable="true"><div id="singleDeck-0"></div></div>
+      <div class="ship singleDeck-container"   id = singledeck4 draggable="true"><div id="singleDeck-0"></div></div>
+      <div class="ship doubleDeck-container" id = doubledeck1 draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
+      <div class="ship doubleDeck-container" id = doubledeck2 draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
+      <div class="ship doubleDeck-container" id = doubledeck3 draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
+      <div class="ship tripleDeck-container" id = tripledeck1 draggable="true"><div id="tripleDeck-0"></div><div id="tripleDeck-1"></div><div id="tripleDeck-2"></div></div>
+      <div class="ship tripleDeck-container" id = tripledeck2 draggable="true"><div id="tripleDeck-0"></div><div id="tripleDeck-1"></div><div id="tripleDeck-2"></div></div>
+      <div class="ship fourDeck-container" id = fourdeck1 draggable="true"><div id="fourDeck-0"></div><div id="fourDeck-1"></div><div id="fourDeck-2"></div><div id="fourDeck-3"></div></div>
     </div>
   </div>
     `;
