@@ -7,7 +7,7 @@ class AudioPlayer extends Component {
         audioPlayer.src = require('../../../../../assets/sound/main-track.mp3');
         audioPlayer.loop = true;
         console.log(sessionStorage.getItem('volume'));
-        audioPlayer.volume = Number(sessionStorage.getItem('volume')) / 100 || 0.5;
+        audioPlayer.volume = Number(sessionStorage.getItem('volume')) / 100 ?? 0.5;
         let play = setTimeout(async function tryPlay() {
             try {
                 await audioPlayer.play();
