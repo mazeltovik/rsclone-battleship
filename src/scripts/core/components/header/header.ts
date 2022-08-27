@@ -4,7 +4,8 @@ import options from '../../../../assets/svg/options.svg';
 import achives from '../../../../assets/svg/achives.svg';
 import leaderboard from '../../../../assets/svg/leaderboard.svg';
 import close from '../../../../assets/svg/close.svg';
-import { Console } from 'console';
+import AudioPlayer from './audio-player/audioPlayer';
+
 const obj: { [key: string]: string } = {
     options,
     achives,
@@ -43,12 +44,16 @@ class Header extends Component {
 
     private static createPopUpWindow() {
         const popUpWindow = document.createElement('div');
-        const popUpWindowClose = document.createElement('img');
-        popUpWindowClose.src = close;
-        popUpWindowClose.classList.add('pop-up-window_close');
         popUpWindow.classList.add('pop-up-window');
-        popUpWindow.append(popUpWindowClose);
+        // popUpWindow.append(popUpWindowClose);
         document.body.append(popUpWindow);
+    }
+
+    private static createPopUpTitle(title: string) {
+        const titleHTML = document.createElement('h2');
+        titleHTML.innerText = title[0].toUpperCase() + title.slice(1);
+        titleHTML.classList.add(`pop-up-window__title`);
+        return titleHTML;
     }
 
     private static openPopUpWindow() {
@@ -60,16 +65,31 @@ class Header extends Component {
         const popUpWindow = <Element>document.querySelector('.pop-up-window');
 
         for (const target in targets) {
-            targets[target].addEventListener('click', () => {
+            targets[target].addEventListener('click', (event) => {
                 popUpWindow.classList.add('pop-up-window_active');
+                popUpWindow.innerHTML = '';
+                const target = <Element>document.querySelector('.pop-up-window');
+                const popUpWindowClose = document.createElement('img');
+                popUpWindowClose.src = close;
+                popUpWindowClose.classList.add('pop-up-window__close');
+                if (event.target === targets.options) {
+                    target.append(
+                        popUpWindowClose,
+                        Header.createPopUpTitle('options'),
+                        AudioPlayer.createAudioControls()
+                    );
+                }
             });
         }
     }
 
     private static closePopUpWindow() {
-        const popUpWindow = document.querySelector('.pop-up-window');
+        const popUpWindow = <Element>document.querySelector('.pop-up-window');
         document.body.addEventListener('mousedown', (event) => {
-            if (!(event.target === popUpWindow) && popUpWindow?.classList.contains('pop-up-window_active'))
+            if (
+                !(event.target as Element).closest('.pop-up-window') ||
+                (event.target as Element).closest('.pop-up-window__close')
+            )
                 popUpWindow.classList.remove('pop-up-window_active');
         });
     }
@@ -161,7 +181,7 @@ class Header extends Component {
     }
 
     render() {
-        this.container.append(this.createMenu(), this.createBurger());
+        this.container.append(this.createMenu(), this.createBurger(), new AudioPlayer('div', 'audio').render());
         return this.container;
     }
 }
