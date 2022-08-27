@@ -27,14 +27,11 @@
     justify-self: center;
   }
   .pop-up-window__volume-label {
-    display: grid;
-    grid-template-columns: 1fr, 1fr;
-    grid-template-rows: 1fr;
     justify-self: center;
-    grid-template-areas: 'title slider';
+    display: flex;
     align-items: center;
     .pop-up-window__volume-slider {
-      grid-area: slider;
+      margin: 0 5px;
     }
     input[type=range]::-webkit-slider-runnable-track {
       border-radius: 5px;
@@ -52,10 +49,7 @@
       border: 1px solid black;
       background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);;
     }
-    
     .pop-up-window__volume-title {
-      grid-area: title;
-
     }
   }
   &_active {

@@ -22,6 +22,7 @@ class AudioPlayer extends Component {
         const label = document.createElement('label');
         const audioPlayer = <Element>document.querySelector('.audio-player');
         const slider = document.createElement('input');
+        const numberValue = document.createElement('output');
         const title = document.createElement('h3');
         slider.type = 'range';
         slider.addEventListener('input', (event) => {
@@ -32,9 +33,13 @@ class AudioPlayer extends Component {
         });
         slider.value = <string>sessionStorage.getItem('volume') || '50';
         slider.classList.add('pop-up-window__volume-slider');
-        title.innerText = 'Volume: ';
+        slider.setAttribute('oninput', 'outputVolume.value = this.value');
+        title.innerText = 'Volume:';
         title.classList.add('pop-up-window__volume-title');
-        label.append(title, slider);
+        // numberValue.type = 'text';
+        numberValue.id = 'outputVolume';
+        numberValue.value = <string>sessionStorage.getItem('volume') || '50';
+        label.append(title, slider, numberValue);
         label.classList.add('pop-up-window__volume-label');
         return label;
     }
