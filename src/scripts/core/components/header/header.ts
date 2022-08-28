@@ -6,6 +6,7 @@ import leaderboard from '../../../../assets/svg/leaderboard.svg';
 import close from '../../../../assets/svg/close.svg';
 import AudioPlayer from './audio-player/audioPlayer';
 import Authorization from './authorization/authorization';
+import Translate from '../../logic/translate/translate';
 
 const obj: { [key: string]: string } = {
     options,
@@ -77,7 +78,8 @@ class Header extends Component {
                     target.append(
                         popUpWindowClose,
                         Header.createPopUpTitle('options'),
-                        AudioPlayer.createAudioControls()
+                        AudioPlayer.createAudioControls(),
+                        Translate.createTranslateControls()
                     );
                 }
             });
