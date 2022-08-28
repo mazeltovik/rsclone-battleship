@@ -5,6 +5,7 @@ import achives from '../../../../assets/svg/achives.svg';
 import leaderboard from '../../../../assets/svg/leaderboard.svg';
 import close from '../../../../assets/svg/close.svg';
 import AudioPlayer from './audio-player/audioPlayer';
+import Authorization from './authorization/authorization';
 
 const obj: { [key: string]: string } = {
     options,
@@ -181,7 +182,12 @@ class Header extends Component {
     }
 
     render() {
-        this.container.append(this.createMenu(), this.createBurger(), new AudioPlayer('div', 'audio').render());
+        this.container.append(
+            this.createMenu(),
+            this.createBurger(),
+            new AudioPlayer('div', 'audio').render(),
+            new Authorization('div', 'header-container__authorization').render()
+        );
         return this.container;
     }
 }

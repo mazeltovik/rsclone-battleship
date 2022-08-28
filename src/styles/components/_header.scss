@@ -4,6 +4,9 @@
     height: $header-height;
   }
 }
+.header-container__authorization {
+  z-index: 1;
+}
 .header-container__menu {
   height: 250px;
   width: 200px;
@@ -36,6 +39,7 @@
     height: 40px;
     border: 2px solid black;
     transition: 0.3s;
+    user-select: none;
     &:hover {
       transform: scale(1.1);
     }
@@ -47,6 +51,7 @@
   .menu__options,
   .menu__achives,
   .menu__leaderboard {
+    user-select: none;
     transition: 0.3s;
     cursor: pointer;
     &:hover {
