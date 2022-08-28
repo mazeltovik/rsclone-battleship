@@ -31,7 +31,7 @@ class Translate {
         const elements = document.querySelectorAll('[data-language]');
         elements.forEach((element) => {
             console.log(element.getAttribute('data-language'));
-            (element as HTMLElement).innerText = dictionary[language][String(element.getAttribute('data-language'))];
+            (element as HTMLElement).innerHTML = dictionary[language][String(element.getAttribute('data-language'))];
         });
     }
 }
