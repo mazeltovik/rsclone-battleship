@@ -11,8 +11,9 @@
   grid-template-areas:
     "text text"
     "button-yes button-no";
-  background: white;
+  background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
   border: 2px solid black;
+  border-radius: 5px;
   transition: 0.3s;
   &_active {
     transform: scale(1);
@@ -28,7 +29,7 @@
     width: 70px;
     align-self: center;
     justify-self: center;
-    background: white;
+    background: none;
     border: 2px solid black;
     transition: 0.3s;
     &:hover {

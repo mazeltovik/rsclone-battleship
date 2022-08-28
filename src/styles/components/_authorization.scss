@@ -11,6 +11,10 @@
     transform: scale(1.1);
   }
 }
+.header-container__authorization_game-mode {
+  transition: 0;
+  top: -100%;
+}
 .pop-up-authorization {
   border-radius: 5px;
   user-select: none;
