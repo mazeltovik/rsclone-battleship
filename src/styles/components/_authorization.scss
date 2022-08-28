@@ -12,6 +12,7 @@
   }
 }
 .pop-up-authorization {
+  border-radius: 5px;
   user-select: none;
   position: absolute;
   width: 320px;
@@ -20,7 +21,7 @@
   top: calc(50% - 125px);
   z-index: 3;
   border: solid black 2px;
-  background: white;
+  background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
   transform: scale(0);
   transition: 0.3s;
 }
@@ -38,14 +39,15 @@
     font-size: 1.5rem;
     width: 300px;
     display: flex;
-    // align-items: end;
     justify-content: space-between;
     input {
       font-size: inherit;
-      border: solid black 1px;
       width: 200px;
       height: 20px;
-      // margin-left: 5px;
+      background: none;
+      &:focus {
+        border: solid black 1px;
+      }
     }
   }
   button {
@@ -53,7 +55,7 @@
     width: 150px;
     height: 40px;
     border: solid black 2px;
-    background: white;
+    background: none;
     user-select: none;
     transition: 0.3s;
     &:hover {
