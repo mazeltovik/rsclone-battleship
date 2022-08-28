@@ -26,11 +26,14 @@
     "multi-player-page-button multi-player-page-button multi-player-page-button"
     "menu-options menu-achives menu-leaderboard";
   &.header-container__menu_game-mode {
-    top: -100%;
-    left: 0;
+    transform: scale(0);
+    transition: 0.3s;
   }
   &.header-container__menu_active {
-    top: 0;
+    background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
+    border-radius: 5px;
+    border: solid black 2px;
+    transform: scale(1);
   }
   .menu__button {
     font-size: 1.5rem;
