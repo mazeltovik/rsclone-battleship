@@ -4,6 +4,9 @@
     height: $header-height;
   }
 }
+.header-container__authorization {
+  z-index: 1;
+}
 .header-container__menu {
   height: 250px;
   width: 200px;
