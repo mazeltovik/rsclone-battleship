@@ -4,7 +4,8 @@ import options from '../../../../assets/svg/options.svg';
 import achives from '../../../../assets/svg/achives.svg';
 import leaderboard from '../../../../assets/svg/leaderboard.svg';
 import close from '../../../../assets/svg/close.svg';
-import { Console } from 'console';
+import Authorization from './authorization/authorization';
+
 const obj: { [key: string]: string } = {
     options,
     achives,
@@ -161,7 +162,11 @@ class Header extends Component {
     }
 
     render() {
-        this.container.append(this.createMenu(), this.createBurger());
+        this.container.append(
+            this.createMenu(),
+            this.createBurger(),
+            new Authorization('div', 'header-container__authorization').render()
+        );
         return this.container;
     }
 }
