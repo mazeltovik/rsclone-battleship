@@ -14,7 +14,6 @@ class Authorization extends Component {
 
     private authorizationListeners(target: Element) {
         target.addEventListener('click', () => {
-            console.log(123);
             const authorizationWindow = <Element>document.querySelector('.pop-up-authorization');
             authorizationWindow.classList.toggle('pop-up-authorization_active');
         });
@@ -47,6 +46,7 @@ class Authorization extends Component {
         inputUserName.setAttribute('placeholder', 'Enter Username');
         inputUserName.setAttribute('name', 'user-name');
         inputUserName.required = true;
+        inputUserName.id = 'username-input';
         labelPassword.setAttribute('for', 'user-password');
         passwordText.innerText = 'Password:';
         passwordText.setAttribute('data-language', 'password');
@@ -55,6 +55,7 @@ class Authorization extends Component {
         inputPassword.setAttribute('placeholder', 'Enter Password');
         inputPassword.setAttribute('name', 'user-password');
         inputPassword.required = true;
+        inputPassword.id = 'password-input';
         loginButton.innerText = 'Log In';
         loginButton.setAttribute('data-language', 'login');
         loginButton.setAttribute('type', 'submit');

@@ -32,8 +32,16 @@ class Translate {
     }
     static translate(language: string) {
         const elements = document.querySelectorAll('[data-language]');
+        const usernameInput = document.querySelector('#username-input');
+        const passwordInput = document.querySelector('#password-input');
+        if (language === 'en') {
+            usernameInput?.setAttribute('placeholder', 'Enter Username');
+            passwordInput?.setAttribute('placeholder', 'Enter Password');
+        } else if (language === 'ru') {
+            usernameInput?.setAttribute('placeholder', 'Пользователь');
+            passwordInput?.setAttribute('placeholder', 'Введите Пароль');
+        }
         elements.forEach((element) => {
-            // console.log(element.getAttribute('data-language'));
             (element as HTMLElement).innerHTML = dictionary[language][String(element.getAttribute('data-language'))];
         });
     }
