@@ -40,7 +40,7 @@ class Authorization extends Component {
         const loginButton = document.createElement('button');
         const registerButton = document.createElement('button');
         labelUserName.setAttribute('for', 'user-name');
-        userNameText.innerText = 'Username:';
+        userNameText.innerText = 'User:';
         userNameText.setAttribute('data-language', 'username');
         labelUserName.append(userNameText, inputUserName);
         inputUserName.setAttribute('type', 'text');

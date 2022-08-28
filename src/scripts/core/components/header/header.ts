@@ -47,13 +47,13 @@ class Header extends Component {
     private static createPopUpWindow() {
         const popUpWindow = document.createElement('div');
         popUpWindow.classList.add('pop-up-window');
-        // popUpWindow.append(popUpWindowClose);
         document.body.append(popUpWindow);
     }
 
     private static createPopUpTitle(title: string) {
         const titleHTML = document.createElement('h2');
         titleHTML.innerText = title[0].toUpperCase() + title.slice(1);
+        titleHTML.setAttribute('data-language', title);
         titleHTML.classList.add(`pop-up-window__title`);
         return titleHTML;
     }
@@ -74,14 +74,23 @@ class Header extends Component {
                 const popUpWindowClose = document.createElement('img');
                 popUpWindowClose.src = close;
                 popUpWindowClose.classList.add('pop-up-window__close');
-                if (event.target === targets.options) {
-                    target.append(
-                        popUpWindowClose,
-                        Header.createPopUpTitle('options'),
-                        AudioPlayer.createAudioControls(),
-                        Translate.createTranslateControls()
-                    );
+                target.append(popUpWindowClose);
+                switch (event.target) {
+                    case targets.options:
+                        target.append(
+                            Header.createPopUpTitle('options'),
+                            AudioPlayer.createAudioControls(),
+                            Translate.createTranslateControls()
+                        );
+                        break;
+                    case targets.achives:
+                        target.append(Header.createPopUpTitle('achives'));
+                        break;
+                    case targets.leaderboard:
+                        target.append(Header.createPopUpTitle('leaderboard'));
+                        break;
                 }
+                Translate.translate(sessionStorage.getItem('language') || 'en');
             });
         }
     }

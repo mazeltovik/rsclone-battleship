@@ -8,11 +8,14 @@ class Translate {
         const russian = document.createElement('option');
         const english = document.createElement('option');
         title.innerText = 'Language:';
+        title.setAttribute('data-language', 'language');
         title.classList.add('pop-up-window__language-title');
         select.classList.add('pop-up-window__language-select');
         russian.innerText = 'Russian';
+        russian.setAttribute('data-language', 'russian');
         russian.value = 'ru';
         english.innerText = 'English';
+        english.setAttribute('data-language', 'english');
         english.value = 'en';
         (sessionStorage.getItem('language') || 'en') === 'en' ? (english.selected = true) : (russian.selected = true);
         select.append(russian, english);
@@ -30,7 +33,7 @@ class Translate {
     static translate(language: string) {
         const elements = document.querySelectorAll('[data-language]');
         elements.forEach((element) => {
-            console.log(element.getAttribute('data-language'));
+            // console.log(element.getAttribute('data-language'));
             (element as HTMLElement).innerHTML = dictionary[language][String(element.getAttribute('data-language'))];
         });
     }

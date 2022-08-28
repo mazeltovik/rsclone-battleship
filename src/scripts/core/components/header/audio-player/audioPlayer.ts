@@ -33,8 +33,8 @@ class AudioPlayer extends Component {
         slider.classList.add('pop-up-window__volume-slider');
         slider.setAttribute('oninput', 'outputVolume.value = this.value');
         title.innerText = 'Volume:';
+        title.setAttribute('data-language', 'volume');
         title.classList.add('pop-up-window__volume-title');
-        // numberValue.type = 'text';
         numberValue.id = 'outputVolume';
         numberValue.value = <string>sessionStorage.getItem('volume') || '50';
         label.append(title, slider, numberValue);
