@@ -114,6 +114,7 @@ class Header extends Component {
             buttonHTML.id = `${button.id}-button`;
             buttonHTML.innerText = button.text;
             buttonHTML.classList.add('menu__button');
+            buttonHTML.setAttribute('data-language', button.text.split(' ').join('').toLocaleLowerCase());
             pageMenuButtons.append(buttonHTML);
         });
         this.createPopUpElements(pageMenuButtons);

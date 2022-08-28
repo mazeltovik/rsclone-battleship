@@ -1,8 +1,16 @@
-const dictionary: { en: {}; ru: {} } = {
+const dictionary: { [key: string]: { [key: string]: string } } = {
     en: {
-        menu: 'menu',
+        menu: 'Menu',
+        classicgame: 'Classic Game',
+        singleplayer: 'Single Player',
+        multiplayer: 'Multiplayer',
     },
-    ru: {},
+    ru: {
+        menu: 'Меню',
+        classicgame: 'Классика',
+        singleplayer: 'Одиночная Игра',
+        multiplayer: 'Мультиплеер',
+    },
 };
 
 export default dictionary;

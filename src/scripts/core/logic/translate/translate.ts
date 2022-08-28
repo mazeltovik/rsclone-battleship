@@ -1,3 +1,5 @@
+import dictionary from './dictionary';
+
 class Translate {
     static createTranslateControls() {
         const label = document.createElement('label');
@@ -12,7 +14,7 @@ class Translate {
         russian.value = 'ru';
         english.innerText = 'English';
         english.value = 'en';
-        english.selected = true;
+        (sessionStorage.getItem('language') || 'en') === 'en' ? (english.selected = true) : (russian.selected = true);
         select.append(russian, english);
         select.addEventListener('change', (event) => Translate.languageHandler(event));
         label.append(title, select);
@@ -21,7 +23,16 @@ class Translate {
     }
 
     static languageHandler(event: Event) {
-        console.log((event.target as HTMLSelectElement).value);
+        const language = (event.target as HTMLSelectElement).value;
+        sessionStorage.setItem('language', language);
+        Translate.translate(language);
+    }
+    static translate(language: string) {
+        const elements = document.querySelectorAll('[data-language]');
+        elements.forEach((element) => {
+            console.log(element.getAttribute('data-language'));
+            (element as HTMLElement).innerText = dictionary[language][String(element.getAttribute('data-language'))];
+        });
     }
 }
 
