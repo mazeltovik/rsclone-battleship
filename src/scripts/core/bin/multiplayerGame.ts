@@ -324,18 +324,29 @@ export default class MultiplayerGame {
         this.socket.on('player-number', (num: string) => {
             const number = parseInt(num);
             if (number === -1) {
-                console.log('Server is full'); //todo: решить как реализовать на странице
+                console.log('Server is full');
+                //todo: решить как реализовать на странице
             } else {
                 this.playerNumber = number;
                 if (this.playerNumber === 1) this.currentPlayer = 'enemy';
 
-                console.log(this.playerNumber);
+                console.log(`Your player number is ${this.playerNumber}`);
             }
         });
     }
 
     controlPlayerConnection(string: string) {
-        console.log(`Player ${string}`); //todo: решить как реализовать на странице
+        console.log(`Player ${string}`);
+        //todo: решить как реализовать на странице
+    }
+
+    playerReady() {
+        document.querySelector('#start')?.addEventListener('click', () => {
+            console.log('You are ready');
+
+            this.socket.emit('player-ready');
+            this.isReady = true;
+        });
     }
 
     start() {
@@ -352,6 +363,41 @@ export default class MultiplayerGame {
 
         this.socket.on('player-connection', (string: string) => {
             this.controlPlayerConnection(string);
+        });
+
+        this.playerReady();
+
+        this.socket.on('enemy-ready', (string: string) => {
+            this.isEnemyReady = true;
+            console.log(string);
+            // todo: решить как реализовать на странице
+        });
+
+        window.addEventListener('hashchange', () => {
+            console.log('You are disconnected');
+            // todo: решить как реализовать на странице
+            this.socket.disconnect();
+        });
+
+        this.enemyGrid.addEventListener('click', (event) => {
+            const target: HTMLElement = event.target as HTMLElement;
+            if (this.currentPlayer === 'user' && this.isReady && this.isEnemyReady) {
+                const shotFired: string = target.dataset.id as string;
+                this.socket.emit('fire', shotFired);
+                this.currentPlayer = 'enemy';
+            }
+        });
+
+        this.socket.on('fire', (id) => {
+            console.log(`enemy fire ${id}`);
+            // todo: реализовать функционал
+            this.socket.emit('fire-reply', MultiplayerGame.userField[id].dataset.id);
+            this.currentPlayer = 'user';
+        });
+
+        this.socket.on('fire-reply', (square) => {
+            console.log(square);
+            // todo: реализовать функционал
         });
     }
 }
