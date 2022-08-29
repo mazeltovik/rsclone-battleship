@@ -4,7 +4,10 @@ import options from '../../../../assets/svg/options.svg';
 import achives from '../../../../assets/svg/achives.svg';
 import leaderboard from '../../../../assets/svg/leaderboard.svg';
 import close from '../../../../assets/svg/close.svg';
-import { Console } from 'console';
+import AudioPlayer from './audio-player/audioPlayer';
+import Authorization from './authorization/authorization';
+import Translate from '../../logic/translate/translate';
+
 const obj: { [key: string]: string } = {
     options,
     achives,
@@ -43,12 +46,16 @@ class Header extends Component {
 
     private static createPopUpWindow() {
         const popUpWindow = document.createElement('div');
-        const popUpWindowClose = document.createElement('img');
-        popUpWindowClose.src = close;
-        popUpWindowClose.classList.add('pop-up-window_close');
         popUpWindow.classList.add('pop-up-window');
-        popUpWindow.append(popUpWindowClose);
         document.body.append(popUpWindow);
+    }
+
+    private static createPopUpTitle(title: string) {
+        const titleHTML = document.createElement('h2');
+        titleHTML.innerText = title[0].toUpperCase() + title.slice(1);
+        titleHTML.setAttribute('data-language', title);
+        titleHTML.classList.add(`pop-up-window__title`);
+        return titleHTML;
     }
 
     private static openPopUpWindow() {
@@ -60,17 +67,49 @@ class Header extends Component {
         const popUpWindow = <Element>document.querySelector('.pop-up-window');
 
         for (const target in targets) {
-            targets[target].addEventListener('click', () => {
+            targets[target].addEventListener('click', (event) => {
                 popUpWindow.classList.add('pop-up-window_active');
+                popUpWindow.innerHTML = '';
+                const target = <Element>document.querySelector('.pop-up-window');
+                const popUpWindowClose = document.createElement('img');
+                popUpWindowClose.src = close;
+                popUpWindowClose.classList.add('pop-up-window__close');
+                target.append(popUpWindowClose);
+                switch (event.target) {
+                    case targets.options:
+                        target.append(
+                            Header.createPopUpTitle('options'),
+                            AudioPlayer.createAudioControls(),
+                            Translate.createTranslateControls()
+                        );
+                        break;
+                    case targets.achives:
+                        target.append(Header.createPopUpTitle('achives'));
+                        break;
+                    case targets.leaderboard:
+                        target.append(Header.createPopUpTitle('leaderboard'));
+                        break;
+                }
+                Translate.translate(sessionStorage.getItem('language') || 'en');
             });
         }
     }
 
     private static closePopUpWindow() {
-        const popUpWindow = document.querySelector('.pop-up-window');
+        const popUpWindow = <Element>document.querySelector('.pop-up-window');
         document.body.addEventListener('mousedown', (event) => {
-            if (!(event.target === popUpWindow) && popUpWindow?.classList.contains('pop-up-window_active'))
+            if (
+                !(event.target as Element).closest('.pop-up-window') ||
+                (event.target as Element).closest('.pop-up-window__close')
+            )
                 popUpWindow.classList.remove('pop-up-window_active');
+        });
+    }
+
+    private static gameModeMenuLogic() {
+        document.addEventListener('keydown', (event) => {
+            const burger = document.querySelector('.header-container__burger');
+            if (event.key === 'Escape') (burger as HTMLElement).click();
         });
     }
 
@@ -80,6 +119,7 @@ class Header extends Component {
         Header.closePopUpWindow();
         Header.createPopUpConfirm();
         Header.addMenuButtonsListeners();
+        Header.gameModeMenuLogic();
     }
 
     private createMenu() {
@@ -91,6 +131,7 @@ class Header extends Component {
             buttonHTML.id = `${button.id}-button`;
             buttonHTML.innerText = button.text;
             buttonHTML.classList.add('menu__button');
+            buttonHTML.setAttribute('data-language', button.text.split(' ').join('').toLocaleLowerCase());
             pageMenuButtons.append(buttonHTML);
         });
         this.createPopUpElements(pageMenuButtons);
@@ -142,11 +183,14 @@ class Header extends Component {
         const buttonYes = document.createElement('button');
         const buttonNo = document.createElement('button');
         warning.innerHTML = 'Do you really want to leave?<br> All progress will be lost!';
+        warning.setAttribute('data-language', 'warning');
         warning.classList.add('pop-up-confirm__text');
         buttonYes.innerText = 'Yes';
         buttonYes.classList.add('pop-up-confirm__button-yes');
+        buttonYes.setAttribute('data-language', 'yes');
         buttonNo.innerText = 'No';
         buttonNo.classList.add('pop-up-confirm__button-no');
+        buttonNo.setAttribute('data-language', 'no');
         popUpConfirm.classList.add('pop-up-confirm');
         popUpConfirm.append(warning, buttonYes, buttonNo);
         document.body.append(popUpConfirm);
@@ -161,7 +205,12 @@ class Header extends Component {
     }
 
     render() {
-        this.container.append(this.createMenu(), this.createBurger());
+        this.container.append(
+            this.createMenu(),
+            this.createBurger(),
+            new AudioPlayer('div', 'audio').render(),
+            new Authorization('div', 'header-container__authorization').render()
+        );
         return this.container;
     }
 }

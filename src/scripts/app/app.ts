@@ -8,6 +8,7 @@ import Header from '../core/components/header/header';
 import Footer from '../core/components/footer/footer';
 import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
+import Translate from '../core/logic/translate/translate';
 import MultiplayerGame from '../core/bin/multiplayerGame';
 
 export const enum PageIds {
@@ -85,6 +86,7 @@ class App {
         this.burger.burgerHandler();
         Header.popUpElementsListeners();
         this.enableRouteChange();
+        Translate.translate(sessionStorage.getItem('language') || 'en');
     }
 }
 

@@ -1,0 +1,69 @@
+.header-container__authorization {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  border: 2px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+  user-select: none;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+.header-container__authorization_game-mode {
+  transition: 0;
+  top: -100%;
+}
+.pop-up-authorization {
+  border-radius: 5px;
+  user-select: none;
+  position: absolute;
+  width: 320px;
+  height: 250px;
+  left: calc(50% - 160px);
+  top: calc(50% - 125px);
+  z-index: 3;
+  border: solid black 2px;
+  background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
+  transform: scale(0);
+  transition: 0.3s;
+}
+.pop-up-authorization_active {
+  transform: scale(1);
+}
+.pop-up-authorization__form {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  align-items: center;
+  justify-items: center;
+  label {
+    font-size: 1.5rem;
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    input {
+      font-size: inherit;
+      width: 200px;
+      height: 20px;
+      background: none;
+      &:focus {
+        border: solid black 1px;
+      }
+    }
+  }
+  button {
+    font-size: 1.5rem;
+    width: 150px;
+    height: 40px;
+    border: solid black 2px;
+    background: none;
+    user-select: none;
+    transition: 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
