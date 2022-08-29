@@ -9,8 +9,9 @@ export default function classicGameHTML(elem: HTMLElement) {
     <div class="setup-buttons" id="setup-buttons">
       <button id="start" class="btn">Start Game</button>
       <button id="rotate" class="btn">Rotate Your Ships</button>
+      <button id="random" class="btn">Random Place Ships</button>
     </div>
-    <h3 id="whose-go" class="info-text">Your Go</h3>
+    <h3 id="whose-go" class="info-text">Please place all ships</h3>
     <h3 id="info" class="info-text"></h3>
   </div>
 
@@ -19,7 +20,7 @@ export default function classicGameHTML(elem: HTMLElement) {
       <div class="ship singleDeck-container" id = singledeck1 draggable="true"><div id="singleDeck-0"></div></div>
       <div class="ship singleDeck-container"  id = singledeck2 draggable="true"><div id="singleDeck-0"></div></div>
       <div class="ship singleDeck-container"  id = singledeck3 draggable="true"><div id="singleDeck-0"></div></div>
-      <div class="ship singleDeck-container"   id = singledeck4 draggable="true"><div id="singleDeck-0"></div></div>
+      <div class="ship singleDeck-container"  id = singledeck4 draggable="true"><div id="singleDeck-0"></div></div>
       <div class="ship doubleDeck-container" id = doubledeck1 draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
       <div class="ship doubleDeck-container" id = doubledeck2 draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
       <div class="ship doubleDeck-container" id = doubledeck3 draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>

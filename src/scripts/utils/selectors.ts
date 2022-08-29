@@ -10,6 +10,10 @@ const SELECTORS = {
     fourDeck: '.fourDeck-container',
     fourDeckVertical: 'fourDeck-container-vertical',
     rotateButton: '#rotate',
+    turnDisplay: '#whose-go',
+    infoDisplay: '#info',
+    btnStart: '#start',
+    btnRandom: '#random',
 } as const;
 
 export default SELECTORS;

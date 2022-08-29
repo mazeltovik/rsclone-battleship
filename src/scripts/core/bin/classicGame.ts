@@ -1,6 +1,7 @@
 import SELECTORS from '../../utils/selectors';
 import RandomComputerField from '../logic/RandomComputerField';
 import shipsForClassicGame from '../../utils/ships';
+import Controller from '../logic/controller';
 
 type Options = {
     [key: string]: number;
@@ -44,6 +45,7 @@ export default class ClassicGame {
     static userField: HTMLDivElement[] = [];
     static matrix: number[][] = [...Array(10)].map(() => Array(10).fill(0));
     static squadron: Squadron = {};
+    static turnDisplay: HTMLHeadingElement;
     // Статический метод для добавления красных полей вокруг кораблей,
     // чтобы показать, в какие поля нельзя ставить корабль
     static addRedClass(id: number) {
@@ -83,8 +85,6 @@ export default class ClassicGame {
             k++;
         }
         ClassicGame.squadron[shipName] = { arrDecks, hits, x, y, kx, ky };
-        console.log(ClassicGame.matrix);
-        console.log(ClassicGame.squadron);
     }
     userGrid;
     computerGrid;
@@ -93,6 +93,9 @@ export default class ClassicGame {
     ships;
     btnRotate;
     computer: RandomComputerField;
+    btnStart;
+    btnRandom;
+    controller: Controller;
     constructor() {
         this.userGrid = document.querySelector(SELECTORS.userGrid) as HTMLDivElement;
         this.computerGrid = document.querySelector(SELECTORS.computerGrid) as HTMLDivElement;
@@ -100,7 +103,18 @@ export default class ClassicGame {
         this.ships = document.querySelectorAll(SELECTORS.ships);
         // this.userField = [];
         this.computerField = [];
+        this.btnStart = document.querySelector(SELECTORS.btnStart) as HTMLButtonElement;
+        this.btnRandom = document.querySelector(SELECTORS.btnRandom) as HTMLButtonElement;
         this.computer = new RandomComputerField(shipsForClassicGame, 10);
+        this.controller = new Controller(
+            ClassicGame.userField,
+            this.computerGrid,
+            this.computerField,
+            ClassicGame.matrix,
+            this.computer.matrix,
+            ClassicGame.squadron,
+            this.computer.squadron
+        );
     }
 
     // Функция создает игровое поле
@@ -120,7 +134,7 @@ export default class ClassicGame {
             arr.push(...v);
         });
         arr.forEach((v, i) => {
-            if (v === 1) this.computerField[i].classList.add('taken', 'red');
+            if (v === 1) this.computerField[i].classList.add('taken');
         });
     }
 
@@ -157,6 +171,29 @@ export default class ClassicGame {
         });
     }
 
+    //обработчик события при клике на кнопку start game;
+    startBtnClick() {
+        this.btnStart.addEventListener('click', (e) => {
+            if (ClassicGame.allShipsPlaced) {
+                this.controller.init();
+                ClassicGame.userField.forEach((v) => {
+                    v.classList.remove('red');
+                });
+                this.btnStart.style.display = 'none';
+                this.btnRotate.style.display = 'none';
+                this.btnRandom.style.display = 'none';
+            } else {
+                return;
+            }
+        });
+    }
+    // Рандомная растановка для поля игрока
+    randomBtnClick() {
+        this.btnRandom.addEventListener('click', (e) => {
+            this.btnStart.style.display = 'none';
+            this.btnRotate.style.display = 'none';
+        });
+    }
     // Функия вешает обработчики drag&drop
 
     moveAround() {
@@ -324,14 +361,12 @@ export default class ClassicGame {
                 }
             } else return;
 
-            ClassicGame.displayGrid.removeChild(ClassicGame.draggedShip);
-            if (!ClassicGame.displayGrid.querySelector('.ship')) ClassicGame.allShipsPlaced = true;
             if (ClassicGame.isHorizontal) {
                 let idVertical = parseInt(String(this.dataset.id)) - selectedShipIndex;
-                console.log(idVertical);
+
                 kx = 0;
                 ky = 1;
-                console.log(idVertical);
+
                 if (idVertical < 10) {
                     x = 0;
                     y = ClassicGame.getDecimial(idVertical);
@@ -341,7 +376,7 @@ export default class ClassicGame {
                 }
             } else {
                 let idHorizontal = parseInt(String(this.dataset.id)) - selectedShipIndex - 9;
-                console.log(idHorizontal);
+
                 kx = 1;
                 ky = 0;
                 x = ClassicGame.getIntegral(idHorizontal);
@@ -353,6 +388,12 @@ export default class ClassicGame {
                 }
             }
             ClassicGame.createShip(ClassicGame.makeOption(decks, kx, ky, x, y));
+
+            ClassicGame.displayGrid.removeChild(ClassicGame.draggedShip);
+            if (!ClassicGame.displayGrid.querySelector('.ship')) {
+                ClassicGame.allShipsPlaced = true;
+                document.querySelector(SELECTORS.turnDisplay)!.textContent = 'You Can Start Game';
+            }
         }
     }
     dragEnd() {
@@ -374,5 +415,7 @@ export default class ClassicGame {
         this.generateComputerClass();
         // Вешаем обработчики drag&drop
         this.moveAround();
+        this.startBtnClick();
+        this.randomBtnClick();
     }
 }
