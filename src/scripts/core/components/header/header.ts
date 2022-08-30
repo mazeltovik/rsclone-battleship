@@ -7,6 +7,7 @@ import close from '../../../../assets/svg/close.svg';
 import AudioPlayer from './audio-player/audioPlayer';
 import Authorization from './authorization/authorization';
 import Translate from '../../logic/translate/translate';
+import Achives from '../achives/achives';
 
 const obj: { [key: string]: string } = {
     options,
@@ -84,7 +85,7 @@ class Header extends Component {
                         );
                         break;
                     case targets.achives:
-                        target.append(Header.createPopUpTitle('achives'));
+                        target.append(Header.createPopUpTitle('achives'), ...Achives.createAchivesBlocks());
                         break;
                     case targets.leaderboard:
                         target.append(Header.createPopUpTitle('leaderboard'));
