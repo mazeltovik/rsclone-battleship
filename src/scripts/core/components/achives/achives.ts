@@ -4,8 +4,16 @@ import pirate from '../../../../assets/svg/pirate.svg';
 import bottle from '../../../../assets/svg/bottle.svg';
 import undying from '../../../../assets/svg/undying.svg';
 
+const achivesImages: { [key: string]: '*.svg' } = {
+    youdidit: gun,
+    blackspot: blackspot,
+    pirate: pirate,
+    whatabottle: bottle,
+    undying: undying,
+};
+
 class Achives {
-    private static createAchiveBlock(image: '*.svg', name: string) {
+    private static createAchiveBlock(name: string, image: '*.svg') {
         const container = document.createElement('div');
         const achiveIcon = document.createElement('img');
         const achiveName = document.createElement('h3');
@@ -23,18 +31,25 @@ class Achives {
         return container;
     }
     static createAchivesBlocks() {
-        const achives: Array<['*.svg', string]> = [
-            [gun, 'youdidit'],
-            [blackspot, 'blackspot'],
-            [pirate, 'pirate'],
-            [bottle, 'whatabottle'],
-            [undying, 'undying'],
-        ];
+        const achives = Object.entries(achivesImages);
         const achivesHTML: HTMLElement[] = [];
         achives.forEach((achive) => {
             achivesHTML.push(this.createAchiveBlock(achive[0], achive[1]));
         });
         return achivesHTML;
+    }
+    static earnAchiveNotification(achive: string) {
+        const body = document.body;
+        const container = document.createElement('div');
+        const title = document.createElement('h2');
+        const achiveHTML = Achives.createAchiveBlock(achive, achivesImages[achive]);
+        title.classList.add('earned-achive-container__title');
+        title.setAttribute('data-language', 'earnedachivetitle');
+        achiveHTML.classList.remove('achive-container_disabled');
+        achiveHTML.classList.add('earned-achive-container__achive');
+        container.classList.add('earned-achive-container');
+        container.append(title, achiveHTML);
+        body.append(container);
     }
 }
 

@@ -28,6 +28,7 @@ const dictionary: { [key: string]: { [key: string]: string } } = {
         whatabottleinfo: 'Receive a message from another player in multiplayer.',
         undyingname: 'Undying...',
         undyinginfo: 'Win a game without losing ships.',
+        earnedachivetitle: 'You earned an achive:',
     },
     ru: {
         menu: 'Меню',
@@ -58,6 +59,7 @@ const dictionary: { [key: string]: { [key: string]: string } } = {
         whatabottleinfo: 'Получите сообщение от другого игрока в мультиплеере.',
         undyingname: 'Бессмертный...',
         undyinginfo: 'Выиграйте игру без потери кораблей.',
+        earnedachivetitle: 'Вы поулчили достижение:',
     },
 };
 

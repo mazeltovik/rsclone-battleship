@@ -38,3 +38,22 @@
     line-height: 1.5rem;
   }
 }
+.earned-achive-container {
+  position: absolute;
+  left: calc(50% - 200px);
+  bottom: calc(50% - 60px);
+  width: 400px;
+  height: 120px;
+  .earned-achive-container__title {
+    line-height: 35px;
+    font-size: 2rem;
+    text-align: center;
+  }
+  .earned-achive-container__achive {
+  background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
+    border: 2px solid black;
+    width: 400px;
+    height: 85px;
+  }
+}
+
