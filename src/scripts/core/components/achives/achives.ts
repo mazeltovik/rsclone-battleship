@@ -40,24 +40,26 @@ class Achives {
         return achivesHTML;
     }
     static earnAchiveNotification(achive: string) {
-        sessionStorage.setItem(achive, 'true');
-        const body = document.body;
-        const container = document.createElement('div');
-        const title = document.createElement('h2');
-        const achiveHTML = Achives.createAchiveBlock(achive, achivesImages[achive]);
-        const player = document.createElement('audio');
-        player.src = require('../../../../assets/sound/coins.mp3');
-        player.volume = Number(sessionStorage.getItem('volume')) / 100 ?? 0.5;
-        player.play();
-        title.classList.add('earned-achive-container__title');
-        title.setAttribute('data-language', 'earnedachivetitle');
-        achiveHTML.classList.remove('achive-container_disabled');
-        achiveHTML.classList.add('earned-achive-container__achive');
-        container.classList.add('earned-achive-container');
-        container.style.display = 'none';
-        unFadeWithFade(container);
-        container.append(title, achiveHTML);
-        body.append(container);
+        if (!sessionStorage.getItem(achive)) {
+            sessionStorage.setItem(achive, 'true');
+            const body = document.body;
+            const container = document.createElement('div');
+            const title = document.createElement('h2');
+            const achiveHTML = Achives.createAchiveBlock(achive, achivesImages[achive]);
+            const player = document.createElement('audio');
+            player.src = require('../../../../assets/sound/coins.mp3');
+            player.volume = Number(sessionStorage.getItem('volume')) / 100 ?? 0.5;
+            player.play();
+            title.classList.add('earned-achive-container__title');
+            title.setAttribute('data-language', 'earnedachivetitle');
+            achiveHTML.classList.remove('achive-container_disabled');
+            achiveHTML.classList.add('earned-achive-container__achive');
+            container.classList.add('earned-achive-container');
+            container.style.display = 'none';
+            unFadeWithFade(container);
+            container.append(title, achiveHTML);
+            body.append(container);
+        }
     }
 }
 
