@@ -3,6 +3,7 @@ import blackspot from '../../../../assets/svg/blackspot.svg';
 import pirate from '../../../../assets/svg/pirate.svg';
 import bottle from '../../../../assets/svg/bottle.svg';
 import undying from '../../../../assets/svg/undying.svg';
+import unFadeWithFade from '../../logic/functions';
 
 const achivesImages: { [key: string]: '*.svg' } = {
     youdidit: gun,
@@ -39,6 +40,7 @@ class Achives {
         return achivesHTML;
     }
     static earnAchiveNotification(achive: string) {
+        sessionStorage.setItem(achive, 'true');
         const body = document.body;
         const container = document.createElement('div');
         const title = document.createElement('h2');
@@ -52,6 +54,8 @@ class Achives {
         achiveHTML.classList.remove('achive-container_disabled');
         achiveHTML.classList.add('earned-achive-container__achive');
         container.classList.add('earned-achive-container');
+        container.style.display = 'none';
+        unFadeWithFade(container);
         container.append(title, achiveHTML);
         body.append(container);
     }
