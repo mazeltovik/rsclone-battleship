@@ -29,6 +29,14 @@ type Ship = {
     directions: number[][];
 };
 
+type Ships = {
+    [key: string]: Obj;
+};
+
+type Obj = {
+    [key: string]: number;
+};
+
 // Класс отвечающий за формирование матрицы для радномного раставления кораблей
 // let randomComputerField = new RandomComputerField(shipsForClassicGame, 10);
 
@@ -96,7 +104,8 @@ export default class ClassicGame {
     btnStart;
     btnRandom;
     controller: Controller;
-    constructor() {
+    btnDrop;
+    constructor(public shipsForRandom: Ships, public amount: number) {
         this.userGrid = document.querySelector(SELECTORS.userGrid) as HTMLDivElement;
         this.computerGrid = document.querySelector(SELECTORS.computerGrid) as HTMLDivElement;
         this.btnRotate = document.querySelector(SELECTORS.rotateButton) as HTMLButtonElement;
@@ -105,6 +114,7 @@ export default class ClassicGame {
         this.computerField = [];
         this.btnStart = document.querySelector(SELECTORS.btnStart) as HTMLButtonElement;
         this.btnRandom = document.querySelector(SELECTORS.btnRandom) as HTMLButtonElement;
+        this.btnDrop = document.querySelector(SELECTORS.btnDrop) as HTMLButtonElement;
         this.computer = new RandomComputerField(shipsForClassicGame, 10);
         this.controller = new Controller(
             ClassicGame.userField,
@@ -175,6 +185,8 @@ export default class ClassicGame {
     startBtnClick() {
         this.btnStart.addEventListener('click', (e) => {
             if (ClassicGame.allShipsPlaced) {
+                console.log(ClassicGame.matrix);
+                console.log(ClassicGame.squadron);
                 this.controller.init();
                 ClassicGame.userField.forEach((v) => {
                     v.classList.remove('red');
@@ -182,17 +194,145 @@ export default class ClassicGame {
                 this.btnStart.style.display = 'none';
                 this.btnRotate.style.display = 'none';
                 this.btnRandom.style.display = 'none';
+                this.btnDrop.style.display = 'none';
             } else {
                 return;
             }
         });
     }
+
+    // Расстановка при помощи drag & drop
+
+    dropBtnClick() {
+        this.btnDrop.addEventListener('click', (e) => {
+            this.btnRandom.style.display = 'none';
+            ClassicGame.displayGrid.style.display = 'flex';
+        });
+    }
+
     // Рандомная растановка для поля игрока
     randomBtnClick() {
         this.btnRandom.addEventListener('click', (e) => {
-            this.btnStart.style.display = 'none';
             this.btnRotate.style.display = 'none';
+            this.btnRandom.style.display = 'none';
+            this.btnDrop.style.display = 'none';
+            this.randomLocationShips();
+            this.drawShips();
+            this.ships.forEach((v) => v.remove());
+            ClassicGame.allShipsPlaced = true;
+            document.querySelector(SELECTORS.turnDisplay)!.textContent = 'You Can Start Game';
         });
+    }
+
+    drawShips() {
+        for (let key in ClassicGame.squadron) {
+            let id: string;
+            let diraction: string;
+            let kx = ClassicGame.squadron[key].kx;
+            let ky = ClassicGame.squadron[key].ky;
+            if (kx === 0 && ky === 1) {
+                diraction = 'horizontal';
+            } else {
+                diraction = 'vertical';
+            }
+            ClassicGame.squadron[key].arrDecks.forEach((v, i) => {
+                let length = ClassicGame.squadron[key].arrDecks.length;
+                id = this.translateCoords(v);
+                // ClassicGame.userField[Number(id)].classList.add('taken', diraction);
+                if (i === 0 && length > 1) {
+                    ClassicGame.userField[Number(id)].classList.add('taken', 'start', diraction);
+                } else if (i === 0 && length == 1) {
+                    ClassicGame.userField[Number(id)].classList.add('taken', 'single', diraction);
+                } else if (i === length - 1) {
+                    ClassicGame.userField[Number(id)].classList.add('taken', 'end', diraction);
+                } else {
+                    ClassicGame.userField[Number(id)].classList.add('taken', diraction);
+                }
+            });
+        }
+    }
+
+    translateCoords(arr: number[]) {
+        if (arr[0] === 0) return String(arr[1]);
+        return `${arr[0]}${arr[1]}`;
+    }
+
+    /// Рандомная генерация кораблей
+    createShip(obj: Options, shipname: string) {
+        let { decks, x, y, kx, ky } = obj;
+        let k = 0;
+        let arrDecks: number[][] = [];
+        let hits = 0;
+        while (k < decks) {
+            let i = Number(x) + Number(k) * Number(kx);
+            let j = Number(y) + Number(k) * Number(ky);
+            ClassicGame.matrix[i][j] = 1;
+            arrDecks.push([i, j]);
+            k++;
+        }
+        ClassicGame.squadron[shipname] = { arrDecks, hits, x, y, kx, ky };
+    }
+    randomLocationShips() {
+        for (let ship in this.shipsForRandom) {
+            let count = this.shipsForRandom[ship].count;
+            let decks = this.shipsForRandom[ship].deck;
+            let shipName: string = '';
+            let i = 0;
+            while (i < count) {
+                let options: Options = this.getCoordsDecks(decks);
+                options.decks = decks;
+                shipName = ship + String(i + 1);
+                this.createShip(options, shipName);
+                i++;
+            }
+        }
+    }
+    getCoordsDecks(decks: number): Obj {
+        let kx = RandomComputerField.getRandomDiraction(1),
+            ky;
+        let x, y;
+        if (kx === 0) {
+            ky = 1;
+        } else ky = 0;
+        if (kx == 0) {
+            x = RandomComputerField.getRandomDiraction(this.amount - 1);
+            y = RandomComputerField.getRandomDiraction(this.amount - decks);
+        } else {
+            x = RandomComputerField.getRandomDiraction(this.amount - decks);
+            y = RandomComputerField.getRandomDiraction(this.amount - 1);
+        }
+        let coords = { x, y, kx, ky };
+        let result = this.validateShip(coords, decks);
+        if (!result) return this.getCoordsDecks(decks);
+        return coords;
+    }
+    validateShip(obj: Obj, decks: number) {
+        let { x, y, kx, ky, fromX, toX, fromY, toY } = obj;
+        fromX = x == 0 ? x : x - 1;
+        if (x + kx * decks == this.amount && kx == 1) {
+            toX = x + kx * decks;
+        } else if (x + kx * decks < this.amount && kx == 1) {
+            toX = x + kx * decks + 1;
+        } else if (x == this.amount - 1 && kx == 0) {
+            toX = x + 1;
+        } else if (x < this.amount - 1 && kx == 0) {
+            toX = x + 2;
+        }
+
+        fromY = y == 0 ? y : y - 1;
+        if (y + ky * decks == this.amount && ky == 1) {
+            toY = y + ky * decks;
+        } else if (y + ky * decks < this.amount && ky == 1) {
+            toY = y + ky * decks + 1;
+        } else if (y == this.amount - 1 && ky == 0) {
+            toY = y + 1;
+        } else if (y < this.amount && ky == 0) {
+            toY = y + 2;
+        }
+        if (toX === undefined || toY === undefined) return false;
+        if (ClassicGame.matrix.slice(fromX, toX).filter((arr) => arr.slice(fromY, toY).includes(1)).length > 0)
+            return false;
+        return true;
     }
     // Функия вешает обработчики drag&drop
 
@@ -388,7 +528,6 @@ export default class ClassicGame {
                 }
             }
             ClassicGame.createShip(ClassicGame.makeOption(decks, kx, ky, x, y));
-
             ClassicGame.displayGrid.removeChild(ClassicGame.draggedShip);
             if (!ClassicGame.displayGrid.querySelector('.ship')) {
                 ClassicGame.allShipsPlaced = true;
@@ -417,5 +556,6 @@ export default class ClassicGame {
         this.moveAround();
         this.startBtnClick();
         this.randomBtnClick();
+        this.dropBtnClick();
     }
 }

@@ -14,6 +14,7 @@ const SELECTORS = {
     infoDisplay: '#info',
     btnStart: '#start',
     btnRandom: '#random',
+    btnDrop: '#drop',
 } as const;
 
 export default SELECTORS;

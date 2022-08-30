@@ -8,7 +8,7 @@ import Header from '../core/components/header/header';
 import Footer from '../core/components/footer/footer';
 import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
-
+import shipsForClassicGame from '../utils/ships';
 export const enum PageIds {
     MenuPageId = 'menu-page',
     ClassicPageId = 'classic-page',
@@ -43,7 +43,7 @@ class App {
             else Page.gameModeStatusChange('add');
             switch (hash) {
                 case 'classic-page':
-                    new ClassicGame().build();
+                    new ClassicGame(shipsForClassicGame, 10).build();
                     break;
             }
         });

@@ -9,6 +9,7 @@ export default function classicGameHTML(elem: HTMLElement) {
     <div class="setup-buttons" id="setup-buttons">
       <button id="start" class="btn">Start Game</button>
       <button id="rotate" class="btn">Rotate Your Ships</button>
+      <button id="drop" class="btn">Drag & Drop</button>
       <button id="random" class="btn">Random Place Ships</button>
     </div>
     <h3 id="whose-go" class="info-text">Please place all ships</h3>
