@@ -110,7 +110,8 @@ class Header extends Component {
     private static gameModeMenuLogic() {
         document.addEventListener('keydown', (event) => {
             const burger = document.querySelector('.header-container__burger');
-            if (event.key === 'Escape') (burger as HTMLElement).click();
+            if (event.key === 'Escape' && burger?.classList.contains('header-container__burger_game-mode'))
+                (burger as HTMLElement).click();
         });
     }
 
