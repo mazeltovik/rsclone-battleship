@@ -48,7 +48,8 @@ class Achives {
             const achiveHTML = Achives.createAchiveBlock(achive, achivesImages[achive]);
             const player = document.createElement('audio');
             player.src = require('../../../../assets/sound/coins.mp3');
-            player.volume = Number(sessionStorage.getItem('volume')) / 100 ?? 0.5;
+            if (sessionStorage.getItem('volume')) player.volume = Number(sessionStorage.getItem('volume')) / 100;
+            else player.volume = 0.5;
             player.play();
             title.classList.add('earned-achive-container__title');
             title.setAttribute('data-language', 'earnedachivetitle');
