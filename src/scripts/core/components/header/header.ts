@@ -6,6 +6,8 @@ import leaderboard from '../../../../assets/svg/leaderboard.svg';
 import close from '../../../../assets/svg/close.svg';
 import AudioPlayer from './audio-player/audioPlayer';
 import Authorization from './authorization/authorization';
+import Translate from '../../logic/translate/translate';
+import Achives from '../achives/achives';
 
 const obj: { [key: string]: string } = {
     options,
@@ -46,13 +48,13 @@ class Header extends Component {
     private static createPopUpWindow() {
         const popUpWindow = document.createElement('div');
         popUpWindow.classList.add('pop-up-window');
-        // popUpWindow.append(popUpWindowClose);
         document.body.append(popUpWindow);
     }
 
     private static createPopUpTitle(title: string) {
         const titleHTML = document.createElement('h2');
         titleHTML.innerText = title[0].toUpperCase() + title.slice(1);
+        titleHTML.setAttribute('data-language', title);
         titleHTML.classList.add(`pop-up-window__title`);
         return titleHTML;
     }
@@ -73,13 +75,23 @@ class Header extends Component {
                 const popUpWindowClose = document.createElement('img');
                 popUpWindowClose.src = close;
                 popUpWindowClose.classList.add('pop-up-window__close');
-                if (event.target === targets.options) {
-                    target.append(
-                        popUpWindowClose,
-                        Header.createPopUpTitle('options'),
-                        AudioPlayer.createAudioControls()
-                    );
+                target.append(popUpWindowClose);
+                switch (event.target) {
+                    case targets.options:
+                        target.append(
+                            Header.createPopUpTitle('options'),
+                            AudioPlayer.createAudioControls(),
+                            Translate.createTranslateControls()
+                        );
+                        break;
+                    case targets.achives:
+                        target.append(Header.createPopUpTitle('achives'), ...Achives.createAchivesBlocks());
+                        break;
+                    case targets.leaderboard:
+                        target.append(Header.createPopUpTitle('leaderboard'));
+                        break;
                 }
+                Translate.translate(sessionStorage.getItem('language') || 'en');
             });
         }
     }
@@ -95,25 +107,41 @@ class Header extends Component {
         });
     }
 
+    private static gameModeMenuLogic() {
+        document.addEventListener('keydown', (event) => {
+            const burger = document.querySelector('.header-container__burger');
+            if (event.key === 'Escape' && burger?.classList.contains('header-container__burger_game-mode'))
+                (burger as HTMLElement).click();
+        });
+    }
+
     static popUpElementsListeners() {
         Header.createPopUpWindow();
         Header.openPopUpWindow();
         Header.closePopUpWindow();
         Header.createPopUpConfirm();
         Header.addMenuButtonsListeners();
+        Header.gameModeMenuLogic();
     }
 
     private createMenu() {
         const pageMenuButtons = document.createElement('div');
+        const buttonsContainer = document.createElement('div');
         pageMenuButtons.classList.add('header-container__menu');
         menuButtons.forEach((button, index) => {
             const buttonHTML = document.createElement('button');
-            if (index === 0) buttonHTML.disabled = true;
+            if (index === 0) {
+                buttonHTML.disabled = true;
+                buttonHTML.classList.add('menu__button_disabled');
+            }
             buttonHTML.id = `${button.id}-button`;
             buttonHTML.innerText = button.text;
             buttonHTML.classList.add('menu__button');
-            pageMenuButtons.append(buttonHTML);
+            buttonHTML.setAttribute('data-language', button.text.split(' ').join('').toLocaleLowerCase());
+            buttonsContainer.append(buttonHTML);
         });
+        buttonsContainer.classList.add('menu__buttons-container');
+        pageMenuButtons.append(buttonsContainer);
         this.createPopUpElements(pageMenuButtons);
         return pageMenuButtons;
     }
@@ -143,11 +171,15 @@ class Header extends Component {
             target.classList.remove('pop-up-confirm_active');
             history.replaceState(null, 'null', `#${id.slice(0, -7)}`);
             window.dispatchEvent(new HashChangeEvent('hashchange'));
-            buttons.forEach((button) =>
-                button.id === id
-                    ? ((button as HTMLButtonElement).disabled = true)
-                    : ((button as HTMLButtonElement).disabled = false)
-            );
+            buttons.forEach((button) => {
+                if (button.id === id) {
+                    (button as HTMLButtonElement).disabled = true;
+                    button.classList.add('menu__button_disabled');
+                } else {
+                    (button as HTMLButtonElement).disabled = false;
+                    button.classList.remove('menu__button_disabled');
+                }
+            });
         };
         const noHandler = () => {
             buttonYes.removeEventListener('click', yesHandler);
@@ -163,11 +195,14 @@ class Header extends Component {
         const buttonYes = document.createElement('button');
         const buttonNo = document.createElement('button');
         warning.innerHTML = 'Do you really want to leave?<br> All progress will be lost!';
+        warning.setAttribute('data-language', 'warning');
         warning.classList.add('pop-up-confirm__text');
         buttonYes.innerText = 'Yes';
         buttonYes.classList.add('pop-up-confirm__button-yes');
+        buttonYes.setAttribute('data-language', 'yes');
         buttonNo.innerText = 'No';
         buttonNo.classList.add('pop-up-confirm__button-no');
+        buttonNo.setAttribute('data-language', 'no');
         popUpConfirm.classList.add('pop-up-confirm');
         popUpConfirm.append(warning, buttonYes, buttonNo);
         document.body.append(popUpConfirm);

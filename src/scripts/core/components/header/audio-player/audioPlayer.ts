@@ -6,8 +6,8 @@ class AudioPlayer extends Component {
         audioPlayer.classList.add('audio-player');
         audioPlayer.src = require('../../../../../assets/sound/main-track.mp3');
         audioPlayer.loop = true;
-        console.log(sessionStorage.getItem('volume'));
-        audioPlayer.volume = Number(sessionStorage.getItem('volume')) / 100 ?? 0.5;
+        if (sessionStorage.getItem('volume')) audioPlayer.volume = Number(sessionStorage.getItem('volume')) / 100;
+        else audioPlayer.volume = 0.5;
         let play = setTimeout(async function tryPlay() {
             try {
                 await audioPlayer.play();
@@ -28,15 +28,14 @@ class AudioPlayer extends Component {
         slider.addEventListener('input', (event) => {
             const volume = Number((event.target as HTMLInputElement).value);
             sessionStorage.setItem('volume', String(volume));
-            console.log(volume);
             (audioPlayer as HTMLAudioElement).volume = volume / 100;
         });
-        slider.value = <string>sessionStorage.getItem('volume') || '50';
+        slider.value = sessionStorage.getItem('volume') || '50';
         slider.classList.add('pop-up-window__volume-slider');
         slider.setAttribute('oninput', 'outputVolume.value = this.value');
         title.innerText = 'Volume:';
+        title.setAttribute('data-language', 'volume');
         title.classList.add('pop-up-window__volume-title');
-        // numberValue.type = 'text';
         numberValue.id = 'outputVolume';
         numberValue.value = <string>sessionStorage.getItem('volume') || '50';
         label.append(title, slider, numberValue);

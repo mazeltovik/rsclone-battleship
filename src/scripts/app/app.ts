@@ -9,6 +9,9 @@ import Footer from '../core/components/footer/footer';
 import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
 import shipsForClassicGame from '../utils/ships';
+import Translate from '../core/logic/translate/translate';
+import Achives from '../core/components/achives/achives';
+
 export const enum PageIds {
     MenuPageId = 'menu-page',
     ClassicPageId = 'classic-page',
@@ -45,7 +48,11 @@ class App {
                 case 'classic-page':
                     new ClassicGame(shipsForClassicGame, 10).build();
                     break;
+                case 'single-player-page':
+                    Achives.earnAchiveNotification('blackspot');
+                    break;
             }
+            Translate.translate(sessionStorage.getItem('language') || 'en');
         });
     }
 
@@ -81,6 +88,7 @@ class App {
         this.burger.burgerHandler();
         Header.popUpElementsListeners();
         this.enableRouteChange();
+        Translate.translate(sessionStorage.getItem('language') || 'en');
     }
 }
 
