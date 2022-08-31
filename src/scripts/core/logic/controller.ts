@@ -203,8 +203,10 @@ export default class Controller {
             if (this.opponent === this.humanMatrix) {
                 this.userField[id].classList.add('boom');
                 this.turnDisplay.textContent = 'You Lose!';
+                (document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement).style.display = 'block';
             } else {
                 this.turnDisplay.textContent = 'You Won!';
+                (document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement).style.display = 'block';
             }
             this.computerGrid.removeEventListener('click', this.listenerMakeShot);
         } else if (this.opponent === this.humanMatrix) {
@@ -239,7 +241,6 @@ export default class Controller {
         let n = 1,
             x,
             y;
-        console.log(coords);
         for (let coord of coords) {
             x = coord[0];
             y = coord[1];
@@ -411,7 +412,6 @@ export default class Controller {
         // генерируем координаты выстрелов компьютера и заносим их в
         // массивы coordsRandomHit и coordsFixedHit
         this.setCoordsShot();
-
         if (!this.isHandlerController) {
             this.listenerMakeShot = this.makeShot.bind(this);
             this.computerGrid.addEventListener('click', this.listenerMakeShot);

@@ -15,6 +15,7 @@ const SELECTORS = {
     btnStart: '#start',
     btnRandom: '#random',
     btnDrop: '#drop',
+    btnRestart: '#restart',
 } as const;
 
 export default SELECTORS;

@@ -11,6 +11,7 @@ export default function classicGameHTML(elem: HTMLElement) {
       <button id="rotate" class="btn">Rotate Your Ships</button>
       <button id="drop" class="btn">Drag & Drop</button>
       <button id="random" class="btn">Random Place Ships</button>
+      <button id="restart" class="btn">Restart</button>
     </div>
     <h3 id="whose-go" class="info-text">Please place all ships</h3>
     <h3 id="info" class="info-text"></h3>

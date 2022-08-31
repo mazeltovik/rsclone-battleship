@@ -185,8 +185,6 @@ export default class ClassicGame {
     startBtnClick() {
         this.btnStart.addEventListener('click', (e) => {
             if (ClassicGame.allShipsPlaced) {
-                console.log(ClassicGame.matrix);
-                console.log(ClassicGame.squadron);
                 this.controller.init();
                 ClassicGame.userField.forEach((v) => {
                     v.classList.remove('red');
