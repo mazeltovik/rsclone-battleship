@@ -203,11 +203,15 @@ export default class Controller {
             if (this.opponent === this.humanMatrix) {
                 this.userField[id].classList.add('boom');
                 this.turnDisplay.textContent = 'You Lose!';
-                (document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement).style.display = 'block';
             } else {
                 this.turnDisplay.textContent = 'You Won!';
-                (document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement).style.display = 'block';
             }
+            const buttonReset = document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement;
+            buttonReset.style.display = 'block';
+            buttonReset.addEventListener('click', () => {
+                sessionStorage.setItem('restartClassic', 'true');
+                location.reload();
+            });
             this.computerGrid.removeEventListener('click', this.listenerMakeShot);
         } else if (this.opponent === this.humanMatrix) {
             this.userField[id].classList.add('boom');

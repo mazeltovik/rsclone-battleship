@@ -37,12 +37,13 @@ body {
   }
   
   .btn {
+    border: solid black 2px;
     margin:0 0.5rem;
     font-size: inherit;
     background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
     padding: .5em 1em;
     outline: none;
-    border: none;
+    // border: none;
     text-decoration: none;
     cursor: pointer;
     border-radius: .2em;
@@ -83,8 +84,8 @@ body {
   
   .grid-computer > .taken,
   .grid-computer > .boom {
-    background-color: hsl(23, 100%, 50%) !important;
-    // background-color: hsl(200, 100%, 50%) !important;
+    // background-color: hsl(23, 100%, 50%) !important;
+    background-color: hsl(200, 100%, 50%) !important;
     border-radius: 0 !important;
   }
   

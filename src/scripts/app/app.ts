@@ -89,6 +89,10 @@ class App {
         Header.popUpElementsListeners();
         this.enableRouteChange();
         Translate.translate(sessionStorage.getItem('language') || 'en');
+        if (sessionStorage.getItem('restartClassic') === 'true') {
+          (<HTMLButtonElement>document.querySelector('#classic-page-button')).click();
+          sessionStorage.setItem('restartClassic', 'false');
+        }
     }
 }
 
