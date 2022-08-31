@@ -10,6 +10,7 @@ import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
 import Translate from '../core/logic/translate/translate';
 import MultiplayerGame from '../core/bin/multiplayerGame';
+import Achives from '../core/components/achives/achives';
 
 export const enum PageIds {
     MenuPageId = 'menu-page',
@@ -50,7 +51,11 @@ class App {
                 case 'multi-player-page':
                     new MultiplayerGame().start();
                     break;
+                case 'single-player-page':
+                    Achives.earnAchiveNotification('blackspot');
+                    break;
             }
+            Translate.translate(sessionStorage.getItem('language') || 'en');
         });
     }
 
