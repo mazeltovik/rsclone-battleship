@@ -173,12 +173,20 @@ export default class Controller {
             this.userField[id].classList.add('miss');
         }
     }
+    showInfo(info: string) {
+        let sunkShip = document.querySelector(SELECTORS.info) as HTMLHeadingElement;
+        sunkShip.textContent = `You sunk ${info}`;
+        setTimeout(() => {
+            sunkShip.textContent = '';
+        }, 3000);
+    }
     // //Попадание
     hit(x: number, y: number, id: number) {
         this.opponent[x][y] = 4;
         let squadron: Squadron;
         if (this.player === this.humanMatrix) {
             squadron = this.computerSquadron;
+
             this.computerField[id].classList.add('boom');
         } else {
             squadron = this.humanSquadron;
@@ -195,6 +203,10 @@ export default class Controller {
                     this.tempShip.x0 = dataShip.x;
                     this.tempShip.y0 = dataShip.y;
                 }
+                if (this.player === this.humanMatrix) {
+                    this.showInfo(name.slice(0, -1));
+                }
+                // console.log(squadron[name]);
                 delete squadron[name];
                 break outerloop;
             }
