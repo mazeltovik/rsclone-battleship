@@ -126,16 +126,22 @@ class Header extends Component {
 
     private createMenu() {
         const pageMenuButtons = document.createElement('div');
+        const buttonsContainer = document.createElement('div');
         pageMenuButtons.classList.add('header-container__menu');
         menuButtons.forEach((button, index) => {
             const buttonHTML = document.createElement('button');
-            if (index === 0) buttonHTML.disabled = true;
+            if (index === 0) {
+                buttonHTML.disabled = true;
+                buttonHTML.classList.add('menu__button_disabled');
+            }
             buttonHTML.id = `${button.id}-button`;
             buttonHTML.innerText = button.text;
             buttonHTML.classList.add('menu__button');
             buttonHTML.setAttribute('data-language', button.text.split(' ').join('').toLocaleLowerCase());
-            pageMenuButtons.append(buttonHTML);
+            buttonsContainer.append(buttonHTML);
         });
+        buttonsContainer.classList.add('menu__buttons-container');
+        pageMenuButtons.append(buttonsContainer);
         this.createPopUpElements(pageMenuButtons);
         return pageMenuButtons;
     }
@@ -165,11 +171,15 @@ class Header extends Component {
             target.classList.remove('pop-up-confirm_active');
             history.replaceState(null, 'null', `#${id.slice(0, -7)}`);
             window.dispatchEvent(new HashChangeEvent('hashchange'));
-            buttons.forEach((button) =>
-                button.id === id
-                    ? ((button as HTMLButtonElement).disabled = true)
-                    : ((button as HTMLButtonElement).disabled = false)
-            );
+            buttons.forEach((button) => {
+                if (button.id === id) {
+                    (button as HTMLButtonElement).disabled = true;
+                    button.classList.add('menu__button_disabled');
+                } else {
+                    (button as HTMLButtonElement).disabled = false;
+                    button.classList.remove('menu__button_disabled');
+                }
+            });
         };
         const noHandler = () => {
             buttonYes.removeEventListener('click', yesHandler);
