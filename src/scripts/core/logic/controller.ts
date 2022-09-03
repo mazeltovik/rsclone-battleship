@@ -420,9 +420,7 @@ export default class Controller {
         }
         this.coordsRandomHit = Controller.removeElementArray(this.coordsRandomHit, coords as number[]);
     }
-
     init() {
-        console.log(this.humanMatrix);
         const random = Controller.getRandom(1);
         this.player = random == 0 ? this.humanMatrix : this.compMatrix;
         this.opponent = this.player === this.humanMatrix ? this.compMatrix : this.humanMatrix;

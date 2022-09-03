@@ -136,7 +136,7 @@ export default class ClassicGame {
         this.userField = [];
         this.matrix = [...Array(10)].map(() => Array(10).fill(0));
         this.squadron = {};
-        this.computer = new RandomComputerField(shipsForClassicGame, 10);
+        this.computer = new RandomComputerField(this.shipsForRandom, 10);
         this.controller = new Controller(
             this.userField,
             this.computerGrid,

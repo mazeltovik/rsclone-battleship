@@ -17,6 +17,8 @@ const SELECTORS = {
     btnDrop: '#drop',
     btnRestart: '#restart',
     info: '#info',
+    levelRoute:'.level_container',
+    currentPage:'#current-page',
 } as const;
 
 export default SELECTORS;

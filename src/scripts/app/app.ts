@@ -11,7 +11,7 @@ import ClassicGame from '../core/bin/classicGame';
 import shipsForClassicGame from '../utils/ships';
 import Translate from '../core/logic/translate/translate';
 import Achives from '../core/components/achives/achives';
-
+import LevelRoute from '../core/logic/levelRoute';
 export const enum PageIds {
     MenuPageId = 'menu-page',
     ClassicPageId = 'classic-page',
@@ -49,7 +49,7 @@ class App {
                     new ClassicGame(shipsForClassicGame, 10).build();
                     break;
                 case 'single-player-page':
-                    Achives.earnAchiveNotification('blackspot');
+                    new LevelRoute().build();
                     break;
             }
             Translate.translate(sessionStorage.getItem('language') || 'en');
