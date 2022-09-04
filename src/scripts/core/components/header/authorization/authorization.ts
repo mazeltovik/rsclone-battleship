@@ -3,6 +3,7 @@ import userIcon from '../../../../../assets/svg/user-icon.svg';
 import { getUser, registrationUser, pushUser } from '../../../../serverInteraction/server';
 import App from '../../../../app/app';
 import Translate from '../../../logic/translate/translate';
+import { achivesImages } from '../../achives/achives';
 
 class Authorization extends Component {
     private body = document.body;
@@ -32,7 +33,6 @@ class Authorization extends Component {
 
     static unloadListener() {
         window.addEventListener('beforeunload', async () => {
-            sessionStorage.clear();
             if (App.user) await pushUser(App.user);
         });
     }
@@ -51,6 +51,7 @@ class Authorization extends Component {
         try {
             const user = await getUser(inputName.value, inputPass.value);
             App.user = user;
+            const achives = Object.keys(achivesImages);
             const volume = App.user.options.volume;
             const language = App.user.options.language;
             sessionStorage.setItem('user', JSON.stringify(user));
@@ -61,6 +62,11 @@ class Authorization extends Component {
             player.volume = Number(sessionStorage.getItem('volume')) / 100;
             sessionStorage.setItem('language', language);
             Translate.translate(language);
+            achives.forEach((achive) => {
+                const sessionAchive = sessionStorage.getItem(achive);
+                if (sessionAchive === 'false') sessionStorage.setItem(achive, user.achives[achive]);
+                else if (sessionAchive === 'true') user.achives[achive] = 'true';
+            });
         } catch {
             error?.remove();
             const err = document.createElement('p');

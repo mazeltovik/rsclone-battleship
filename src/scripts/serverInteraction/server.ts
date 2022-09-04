@@ -30,3 +30,9 @@ export const setUsers = async (obj: Array<{}>) => {
         });
     } catch {}
 };
+
+export const getLeaders = async () => {
+    const leaders = await fetch(`${serverUrl}/getLeaders`);
+    const data = await leaders.json();
+    return data;
+};

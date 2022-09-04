@@ -10,7 +10,6 @@ import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
 import Translate from '../core/logic/translate/translate';
 import Achives from '../core/components/achives/achives';
-import { getUsers, setUsers, getUser } from '../serverInteraction/server';
 import Authorization from '../core/components/header/authorization/authorization';
 
 export const enum PageIds {
@@ -86,6 +85,7 @@ class App {
 
     run() {
         this.replaceHash();
+        Achives.init();
         App.container.append(this.header.render(), App.renderNewPage('menu-page'), this.footer.render());
         this.burger.burgerHandler();
         Header.popUpElementsListeners();

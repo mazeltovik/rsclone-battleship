@@ -4,8 +4,9 @@ import pirate from '../../../../assets/svg/pirate.svg';
 import bottle from '../../../../assets/svg/bottle.svg';
 import undying from '../../../../assets/svg/undying.svg';
 import unFadeWithFade from '../../logic/functions';
+import App from '../../../app/app';
 
-const achivesImages: { [key: string]: '*.svg' } = {
+export const achivesImages: { [key: string]: '*.svg' } = {
     youdidit: gun,
     blackspot: blackspot,
     pirate: pirate,
@@ -14,6 +15,13 @@ const achivesImages: { [key: string]: '*.svg' } = {
 };
 
 class Achives {
+    static init() {
+        const achives = Object.keys(achivesImages);
+        achives.forEach((achive) => {
+            sessionStorage.setItem(achive, 'false');
+        });
+    }
+
     private static createAchiveBlock(name: string, image: '*.svg') {
         const container = document.createElement('div');
         const achiveIcon = document.createElement('img');
@@ -27,7 +35,7 @@ class Achives {
         achiveInfo.classList.add('achive-container__info');
         achiveInfo.setAttribute('data-language', `${name}info`);
         container.classList.add('achive-container');
-        if (!sessionStorage.getItem(name)) container.classList.add('achive-container_disabled');
+        if (sessionStorage.getItem(name) === 'false') container.classList.add('achive-container_disabled');
         container.append(achiveIcon, achiveName, achiveInfo);
         return container;
     }
@@ -40,7 +48,9 @@ class Achives {
         return achivesHTML;
     }
     static earnAchiveNotification(achive: string) {
-        if (!sessionStorage.getItem(achive)) {
+        if (sessionStorage.getItem(achive) === 'false') {
+            App.user.achives[achive] = 'true';
+            console.log(App.user);
             sessionStorage.setItem(achive, 'true');
             const body = document.body;
             const container = document.createElement('div');
