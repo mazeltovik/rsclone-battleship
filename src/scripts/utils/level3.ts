@@ -32,8 +32,8 @@ export default function levelThreeHTML(elem: HTMLElement) {
       </div>
   </div>
   <div class = "perks">
-    <p class = "tube"><p>
-    <p class ="rum"></p>
+    <p class = "tube tooltip"><p>
+    <p class ="rum tooltip"></p>
   </div>
     `;
 }
