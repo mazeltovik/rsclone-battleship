@@ -321,8 +321,8 @@ export default class MultiplayerGame {
     // * =========================================================
 
     getPlayerNumber() {
-        this.socket.on('player-number', (num: string) => {
-            const number = parseInt(num);
+        this.socket.on('player-number', (obj: { player: string; status: string }) => {
+            const number = parseInt(obj.player);
             if (number === -1) {
                 console.log('Server is full');
                 //todo: решить как реализовать на странице
@@ -332,12 +332,21 @@ export default class MultiplayerGame {
 
                 console.log(`Your player number is ${this.playerNumber}`);
             }
+            this.controlPlayerConnection(obj);
+            this.socket.emit('check-players');
         });
     }
 
-    controlPlayerConnection(string: string) {
-        console.log(`Player ${string}`);
-        //todo: решить как реализовать на странице
+    controlPlayerConnection(obj: { player: string; status: string }) {
+        const statusSelector = parseInt(obj.player) !== this.playerNumber ? 'enemy' : 'player';
+        const element = document.querySelector(`.${statusSelector}-connection`) as Element;
+        if (obj.status === 'connected') {
+            element.classList.add('active');
+            element.innerHTML = 'connected';
+        } else if (obj.status === 'disconnected') {
+            element.classList.remove('active');
+            element.innerHTML = 'disconnected';
+        }
     }
 
     playerReady() {
@@ -361,8 +370,8 @@ export default class MultiplayerGame {
 
         this.getPlayerNumber();
 
-        this.socket.on('player-connection', (string: string) => {
-            this.controlPlayerConnection(string);
+        this.socket.on('player-connection', (obj: { player: string; status: string }) => {
+            this.controlPlayerConnection(obj);
         });
 
         this.playerReady();
@@ -371,6 +380,20 @@ export default class MultiplayerGame {
             this.isEnemyReady = true;
             console.log(string);
             // todo: решить как реализовать на странице
+        });
+
+        this.socket.on('check-players', (players: string[]) => {
+            for (let i = 0; i < players.length; i++) {
+                const statusSelector = i !== this.playerNumber ? 'enemy' : 'player';
+                const element = document.querySelector(`.${statusSelector}-connection`) as Element;
+                if (players[i] === 'connected') {
+                    element.classList.add('active');
+                    element.innerHTML = 'connected';
+                } else if (players[i] === 'disconnected') {
+                    element.classList.remove('active');
+                    element.innerHTML = 'disconnected';
+                }
+            }
         });
 
         window.addEventListener('hashchange', () => {
