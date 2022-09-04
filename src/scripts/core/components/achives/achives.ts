@@ -49,7 +49,7 @@ class Achives {
     }
     static earnAchiveNotification(achive: string) {
         if (sessionStorage.getItem(achive) === 'false') {
-            App.user.achives[achive] = 'true';
+            // if (sessionStorage.getItem('logined') === 'true') App.user.achives[achive] = 'true';
             console.log(App.user);
             sessionStorage.setItem(achive, 'true');
             const body = document.body;
