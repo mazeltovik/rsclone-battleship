@@ -76,7 +76,7 @@ export default class Controller {
     isHandlerController: boolean;
     tempShip: TempShips;
     listenerMakeShot!: ListenerShot;
-    rumId:number;
+    rumId: number;
     constructor(
         public userField: HTMLDivElement[],
         public computerGrid: HTMLDivElement,
@@ -84,7 +84,7 @@ export default class Controller {
         public humanMatrix: number[][],
         public compMatrix: number[][],
         public humanSquadron: Squadron,
-        public computerSquadron: Squadron,
+        public computerSquadron: Squadron
     ) {
         this.player = [...Array(10)].map(() => Array(10).fill(0));
         this.opponent = [...Array(10)].map(() => Array(10).fill(0));
@@ -152,8 +152,8 @@ export default class Controller {
         }
     }
     transformCoordsInMatrix(e: MouseEvent, opponent: number[][]) {
-        let x, y,id;
-        if(this.rumId){
+        let x, y, id;
+        if (this.rumId) {
             id = this.rumId;
             this.rumId = 0;
         } else {
@@ -206,7 +206,7 @@ export default class Controller {
         let squadron: Squadron;
         if (this.player === this.humanMatrix) {
             squadron = this.computerSquadron;
-            if(this.computerField[id].classList.contains('help')){
+            if (this.computerField[id].classList.contains('help')) {
                 this.computerField[id].classList.remove('help');
             }
             this.computerField[id].classList.add('boom');
@@ -240,7 +240,7 @@ export default class Controller {
             } else {
                 this.turnDisplay.textContent = 'You Won!';
             }
-            if(location.hash == "#classic-page" ){
+            if (location.hash == '#classic-page') {
                 const buttonReset = document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement;
                 buttonReset.style.display = 'block';
                 buttonReset.addEventListener('click', () => {
@@ -248,8 +248,8 @@ export default class Controller {
                     location.reload();
                 });
             }
-            if(location.hash == "#single-player-page"){
-                this.turnDisplay.textContent += " You complete this level, try another";
+            if (location.hash == '#single-player-page') {
+                this.turnDisplay.textContent += ' You complete this level, try another';
             }
             this.computerGrid.removeEventListener('click', this.listenerMakeShot);
         } else if (this.opponent === this.humanMatrix) {
@@ -372,7 +372,6 @@ export default class Controller {
         }
         this.markUselessCell(coords);
     }
-
 
     setCoordsShot() {
         // получаем координаты каждой клетки игрового поля

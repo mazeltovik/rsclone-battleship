@@ -17,10 +17,11 @@ const SELECTORS = {
     btnDrop: '#drop',
     btnRestart: '#restart',
     info: '#info',
-    levelRoute:'.level_container',
-    currentPage:'#current-page',
-    tube:'.tube',
-    rum:'.rum'
+    levelRoute: '.level_container',
+    currentPage: '#current-page',
+    tube: '.tube',
+    rum: '.rum',
+    gun: '.gun',
 } as const;
 
 export default SELECTORS;

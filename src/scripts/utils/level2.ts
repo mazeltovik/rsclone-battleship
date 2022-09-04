@@ -33,6 +33,7 @@ export default function levelTwoHTML(elem: HTMLElement) {
   <div class = "perks">
     <p class = "tube tooltip"><p>
     <p class ="rum tooltip"></p>
+    <p class = "gun tooltip"></p>
   </div>
     `;
 }
