@@ -10,6 +10,8 @@ import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
 import Translate from '../core/logic/translate/translate';
 import Achives from '../core/components/achives/achives';
+import { getUsers, setUsers, getUser } from '../serverInteraction/server';
+import Authorization from '../core/components/header/authorization/authorization';
 
 export const enum PageIds {
     MenuPageId = 'menu-page',
@@ -19,6 +21,7 @@ export const enum PageIds {
 }
 
 class App {
+    static user: any = JSON.parse(<string>sessionStorage.getItem('user'));
     private static container: HTMLElement = document.body;
     private static currentPageId: string = 'current-page';
     private header: Header;
@@ -88,6 +91,8 @@ class App {
         Header.popUpElementsListeners();
         this.enableRouteChange();
         Translate.translate(sessionStorage.getItem('language') || 'en');
+        Authorization.authorizationCheck();
+        Authorization.unloadListener();
     }
 }
 
