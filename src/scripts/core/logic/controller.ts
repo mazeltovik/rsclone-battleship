@@ -76,6 +76,7 @@ export default class Controller {
     isHandlerController: boolean;
     tempShip: TempShips;
     listenerMakeShot!: ListenerShot;
+    rumId:number;
     constructor(
         public userField: HTMLDivElement[],
         public computerGrid: HTMLDivElement,
@@ -83,7 +84,7 @@ export default class Controller {
         public humanMatrix: number[][],
         public compMatrix: number[][],
         public humanSquadron: Squadron,
-        public computerSquadron: Squadron
+        public computerSquadron: Squadron,
     ) {
         this.player = [...Array(10)].map(() => Array(10).fill(0));
         this.opponent = [...Array(10)].map(() => Array(10).fill(0));
@@ -102,6 +103,7 @@ export default class Controller {
         this.isHandlerController = false;
         this.resetTempShip();
         this.tempShip = { hits: 0, firstHit: [], kx: 0, ky: 0, x0: 0, y0: 0 };
+        this.rumId = 0;
     }
 
     resetTempShip() {
@@ -122,6 +124,7 @@ export default class Controller {
             // if (this.turnDisplay.textContent === 'You Won!') {
             //     this.computerGrid.style.display = 'none';
             // }
+
             [x, y, id] = this.transformCoordsInMatrix(e, this.opponent);
         } else {
             // получаем координаты для выстрела компьютера
@@ -147,6 +150,23 @@ export default class Controller {
                 }, 1000);
                 break;
         }
+    }
+    transformCoordsInMatrix(e: MouseEvent, opponent: number[][]) {
+        let x, y,id;
+        if(this.rumId){
+            id = this.rumId;
+            this.rumId = 0;
+        } else {
+            id = Number((e.target as HTMLDivElement).dataset.id);
+        }
+
+        if (id < 10) {
+            x = 0;
+        } else {
+            x = Math.trunc(id / 10);
+        }
+        y = Controller.getDecimial(id);
+        return [x, y, id];
     }
     // //Промах
 
@@ -186,7 +206,9 @@ export default class Controller {
         let squadron: Squadron;
         if (this.player === this.humanMatrix) {
             squadron = this.computerSquadron;
-
+            if(this.computerField[id].classList.contains('help')){
+                this.computerField[id].classList.remove('help');
+            }
             this.computerField[id].classList.add('boom');
         } else {
             squadron = this.humanSquadron;
@@ -218,12 +240,17 @@ export default class Controller {
             } else {
                 this.turnDisplay.textContent = 'You Won!';
             }
-            const buttonReset = document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement;
-            buttonReset.style.display = 'block';
-            buttonReset.addEventListener('click', () => {
-                sessionStorage.setItem('restartClassic', 'true');
-                location.reload();
-            });
+            if(location.hash == "#classic-page" ){
+                const buttonReset = document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement;
+                buttonReset.style.display = 'block';
+                buttonReset.addEventListener('click', () => {
+                    sessionStorage.setItem('restartClassic', 'true');
+                    location.reload();
+                });
+            }
+            if(location.hash == "#single-player-page"){
+                this.turnDisplay.textContent += " You complete this level, try another";
+            }
             this.computerGrid.removeEventListener('click', this.listenerMakeShot);
         } else if (this.opponent === this.humanMatrix) {
             this.userField[id].classList.add('boom');
@@ -346,18 +373,6 @@ export default class Controller {
         this.markUselessCell(coords);
     }
 
-    transformCoordsInMatrix(e: MouseEvent, opponent: number[][]) {
-        let x, y;
-        let id = Number((e.target as HTMLDivElement).dataset.id);
-
-        if (id < 10) {
-            x = 0;
-        } else {
-            x = Math.trunc(id / 10);
-        }
-        y = Controller.getDecimial(id);
-        return [x, y, id];
-    }
 
     setCoordsShot() {
         // получаем координаты каждой клетки игрового поля

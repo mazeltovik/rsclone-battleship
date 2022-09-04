@@ -31,5 +31,9 @@ export default function levelThreeHTML(elem: HTMLElement) {
       <div class="ship fourDeck-container" id = fourdeck1 draggable="true"><div id="fourDeck-0"></div><div id="fourDeck-1"></div><div id="fourDeck-2"></div><div id="fourDeck-3"></div></div>
       </div>
   </div>
+  <div class = "perks">
+    <p class = "tube"><p>
+    <p class ="rum"></p>
+  </div>
     `;
 }

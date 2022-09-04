@@ -30,5 +30,9 @@ export default function levelTwoHTML(elem: HTMLElement) {
       <div class="ship tripleDeck-container" id = tripledeck2 draggable="true"><div id="tripleDeck-0"></div><div id="tripleDeck-1"></div><div id="tripleDeck-2"></div></div>
       </div>
   </div>
+  <div class = "perks">
+    <p class = "tube"><p>
+    <p class ="rum"></p>
+  </div>
     `;
 }

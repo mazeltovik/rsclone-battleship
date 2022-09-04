@@ -28,5 +28,9 @@ export default function levelOneHTML(elem: HTMLElement) {
       <div class="ship doubleDeck-container" id = doubledeck3 draggable="true"><div id="doubleDeck-0"></div><div id="doubleDeck-1"></div></div>
     </div>
   </div>
+  <div class = "perks">
+    <p class = "tube"><p>
+    <p class ="rum"></p>
+  </div>
     `;
 }

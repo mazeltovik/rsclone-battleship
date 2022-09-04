@@ -19,6 +19,8 @@ const SELECTORS = {
     info: '#info',
     levelRoute:'.level_container',
     currentPage:'#current-page',
+    tube:'.tube',
+    rum:'.rum'
 } as const;
 
 export default SELECTORS;
