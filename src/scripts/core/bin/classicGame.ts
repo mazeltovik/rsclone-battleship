@@ -2,6 +2,7 @@ import SELECTORS from '../../utils/selectors';
 import RandomComputerField from '../logic/RandomComputerField';
 import shipsForClassicGame from '../../utils/ships';
 import Controller from '../logic/controller';
+import Translate from '../logic/translate/translate';
 
 type Options = {
     [key: string]: number;
@@ -265,7 +266,10 @@ export default class ClassicGame {
         this.btnDrop.addEventListener('click', (e) => {
             this.btnRandom.style.display = 'none';
             this.displayGrid.style.display = 'flex';
-            this.info.textContent = 'Use CTRL button to rotate your ships';
+            this.info.textContent = Translate.translateHTML(
+                'Use CTRL button to rotate your ships',
+                'Используйте CTRL для вращения кораблей'
+            );
         });
     }
 
@@ -278,7 +282,10 @@ export default class ClassicGame {
             this.drawShips();
             this.ships.forEach((v) => v.remove());
             this.allShipsPlaced = true;
-            document.querySelector(SELECTORS.turnDisplay)!.textContent = 'You Can Start Game';
+            document.querySelector(SELECTORS.turnDisplay)!.textContent = Translate.translateHTML(
+                'You Can Start Game',
+                'Вы можете начать игру'
+            );
         });
     }
 
@@ -586,7 +593,10 @@ export default class ClassicGame {
             this.displayGrid.removeChild(this.draggedShip);
             if (!this.displayGrid.querySelector('.ship')) {
                 this.allShipsPlaced = true;
-                document.querySelector(SELECTORS.turnDisplay)!.textContent = 'You Can Start Game';
+                document.querySelector(SELECTORS.turnDisplay)!.textContent = Translate.translateHTML(
+                    'You Can Start Game',
+                    'Вы можете начать игру'
+                );
             }
         }
     }

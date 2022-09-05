@@ -2,6 +2,11 @@ import dictionary from './dictionary';
 import App from '../../../app/app';
 
 class Translate {
+    static translateHTML(enText: string, ruText: string) {
+        const language = sessionStorage.getItem('language') || 'en';
+        return language === 'en' ? enText : ruText;
+    }
+
     static createTranslateControls() {
         const label = document.createElement('label');
         const title = document.createElement('h3');

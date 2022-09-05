@@ -51,12 +51,14 @@ class App {
             switch (hash) {
                 case 'classic-page':
                     new ClassicGame(shipsForClassicGame, 10).build();
+                    Translate.translate(sessionStorage.getItem('language') || 'en');
                     break;
                 case 'multi-player-page':
                     new MultiplayerGame().start();
                     break;
                 case 'single-player-page':
                     new LevelRoute().build();
+                    Translate.translate(sessionStorage.getItem('language') || 'en');
                     break;
             }
             Translate.translate(sessionStorage.getItem('language') || 'en');
