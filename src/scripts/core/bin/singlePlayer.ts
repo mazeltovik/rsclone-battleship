@@ -6,6 +6,7 @@ import tube from '../../utils/tube';
 import bottle from '../../utils/bottle';
 import gun from '../../utils/gun';
 import Translate from '../logic/translate/translate';
+import Achive from '../components/achives/achives';
 type Ship = {
     name: string;
     directions: number[][];
@@ -72,6 +73,7 @@ export default class SinglePlayer extends ClassicGame {
             this.controller.rumId = randomValue;
             this.bottleRum.style.opacity = '0.5';
             this.rumCount += 1;
+            Achive.earnAchiveNotification('whatabottle');
         } else return;
     }
 
