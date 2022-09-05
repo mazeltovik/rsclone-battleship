@@ -1,4 +1,5 @@
 import dictionary from './dictionary';
+import App from '../../../app/app';
 
 class Translate {
     static createTranslateControls() {
@@ -28,6 +29,10 @@ class Translate {
     static languageHandler(event: Event) {
         const language = (event.target as HTMLSelectElement).value;
         sessionStorage.setItem('language', language);
+        if (App.user) {
+            App.user.options.language = String(language);
+            sessionStorage.setItem('user', JSON.stringify(App.user));
+        }
         Translate.translate(language);
     }
     static translate(language: string) {

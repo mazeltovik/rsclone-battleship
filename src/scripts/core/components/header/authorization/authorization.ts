@@ -1,5 +1,9 @@
 import Component from '../../../templates/component';
 import userIcon from '../../../../../assets/svg/user-icon.svg';
+import { getUser, registrationUser, pushUser } from '../../../../serverInteraction/server';
+import App from '../../../../app/app';
+import Translate from '../../../logic/translate/translate';
+import { achivesImages } from '../../achives/achives';
 
 class Authorization extends Component {
     private body = document.body;
@@ -24,6 +28,90 @@ class Authorization extends Component {
                 !(event.target as Element).closest('.pop-up-authorization__form')
             )
                 authorizationWindow.classList.remove('pop-up-authorization_active');
+        });
+    }
+
+    static unloadListener() {
+        window.addEventListener('beforeunload', async () => {
+            if (App.user) await pushUser(App.user);
+        });
+    }
+
+    static authorizationCheck() {
+        const userIcon = <HTMLElement>document.querySelector('.header-container__authorization');
+        if (sessionStorage.getItem('logined') === 'true') userIcon.style.backgroundColor = 'green';
+    }
+
+    private async loginHandler(inputName: HTMLInputElement, inputPass: HTMLInputElement) {
+        const userIcon = <HTMLElement>document.querySelector('.header-container__authorization');
+        const form = <HTMLElement>document.querySelector('.pop-up-authorization__form');
+        const popUp = <HTMLElement>document.querySelector('.pop-up-authorization');
+        const error = document.querySelector('.form__error');
+        const player = <HTMLAudioElement>document.querySelector('.audio-player');
+        try {
+            const user = await getUser(inputName.value, inputPass.value);
+            App.user = user;
+            const achives = Object.keys(achivesImages);
+            const volume = App.user.options.volume;
+            const language = App.user.options.language;
+            sessionStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('logined', 'true');
+            userIcon.style.backgroundColor = 'green';
+            popUp.classList.remove('pop-up-authorization_active');
+            sessionStorage.setItem('volume', volume);
+            player.volume = Number(sessionStorage.getItem('volume')) / 100;
+            sessionStorage.setItem('language', language);
+            Translate.translate(language);
+            achives.forEach((achive) => {
+                const sessionAchive = sessionStorage.getItem(achive);
+                if (sessionAchive === 'false') sessionStorage.setItem(achive, user.achives[achive]);
+                else if (sessionAchive === 'true') user.achives[achive] = 'true';
+            });
+        } catch {
+            error?.remove();
+            const err = document.createElement('p');
+            err.classList.add('form__error');
+            const language = sessionStorage.getItem('language');
+            !language || language === 'en'
+                ? (err.innerText = 'Invalid username or password')
+                : (err.innerText = 'Неверное имя или пароль');
+            form.append(err);
+        }
+        userIcon.addEventListener('click', () => {
+            const error = document.querySelector('.form__error');
+            error?.remove();
+            inputName.value = '';
+            inputPass.value = '';
+        });
+    }
+
+    private async registrationHandler(inputName: HTMLInputElement, inputPass: HTMLInputElement) {
+        const form = <HTMLElement>document.querySelector('.pop-up-authorization__form');
+        const error = document.querySelector('.form__error');
+        error?.remove();
+        const newUser = await registrationUser(inputName.value, inputPass.value);
+        if (newUser.status === 400) {
+            const err = document.createElement('p');
+            err.classList.add('form__error');
+            const language = sessionStorage.getItem('language');
+            !language || language === 'en'
+                ? (err.innerText = 'Username is not available')
+                : (err.innerText = 'Имя пользователя недоступно');
+            form.append(err);
+        }
+    }
+
+    private buttonListener(
+        target: Element,
+        inputName: HTMLInputElement,
+        inputPass: HTMLInputElement,
+        type: 'log' | 'reg'
+    ) {
+        target.addEventListener('click', async (event) => {
+            const checkLength = inputName.value.length > 0 && inputPass.value.length > 0;
+            if (checkLength) event.preventDefault();
+            if (type === 'log' && checkLength) await this.loginHandler(inputName, inputPass);
+            if (type === 'reg' && checkLength) await this.registrationHandler(inputName, inputPass);
         });
     }
 
@@ -58,10 +146,12 @@ class Authorization extends Component {
         inputPassword.id = 'password-input';
         loginButton.innerText = 'Log In';
         loginButton.setAttribute('data-language', 'login');
-        loginButton.setAttribute('type', 'submit');
+        loginButton.classList.add('form__login');
+        this.buttonListener(loginButton, inputUserName, inputPassword, 'log');
         registerButton.innerText = 'Registration';
         registerButton.setAttribute('data-language', 'registration');
-        registerButton.setAttribute('type', 'submit');
+        registerButton.classList.add('form__registration');
+        this.buttonListener(registerButton, inputUserName, inputPassword, 'reg');
         form.classList.add('pop-up-authorization__form');
         form.append(labelUserName, labelPassword, loginButton, registerButton);
         container.classList.add('pop-up-authorization');

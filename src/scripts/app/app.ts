@@ -12,7 +12,9 @@ import shipsForClassicGame from '../utils/ships';
 import Translate from '../core/logic/translate/translate';
 import MultiplayerGame from '../core/bin/multiplayerGame';
 import Achives from '../core/components/achives/achives';
+import Authorization from '../core/components/header/authorization/authorization';
 import LevelRoute from '../core/logic/levelRoute';
+
 export const enum PageIds {
     MenuPageId = 'menu-page',
     ClassicPageId = 'classic-page',
@@ -21,6 +23,7 @@ export const enum PageIds {
 }
 
 class App {
+    static user: any = JSON.parse(<string>sessionStorage.getItem('user'));
     private static container: HTMLElement = document.body;
     private static currentPageId: string = 'current-page';
     private header: Header;
@@ -88,11 +91,14 @@ class App {
 
     run() {
         this.replaceHash();
+        Achives.init();
         App.container.append(this.header.render(), App.renderNewPage('menu-page'), this.footer.render());
         this.burger.burgerHandler();
         Header.popUpElementsListeners();
         this.enableRouteChange();
         Translate.translate(sessionStorage.getItem('language') || 'en');
+        Authorization.authorizationCheck();
+        Authorization.unloadListener();
         if (sessionStorage.getItem('restartClassic') === 'true') {
             (<HTMLButtonElement>document.querySelector('#classic-page-button')).click();
             sessionStorage.setItem('restartClassic', 'false');
