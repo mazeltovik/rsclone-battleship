@@ -1,0 +1,23 @@
+.level_container{
+    display: flex;
+    text-align: center;
+    justify-content: space-evenly;
+    padding-top: 50vh;
+}
+.level{
+    border: solid black 2px;
+    margin: 0 0.5rem;
+    font-size: inherit;
+    background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
+    padding: 0.5em 1em;
+    outline: none;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 0.2em;
+    color: #333;
+}
+
+.level:hover{
+    transform: scale(1.1);
+    transition: 0.3s;
+}

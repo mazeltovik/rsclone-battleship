@@ -37,11 +37,13 @@ body {
   }
   
   .btn {
+    border: solid black 2px;
+    margin:0 0.5rem;
     font-size: inherit;
-    background-color: hsl(30, 100%, 50%);
+    background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
     padding: .5em 1em;
     outline: none;
-    border: none;
+    // border: none;
     text-decoration: none;
     cursor: pointer;
     border-radius: .2em;
@@ -49,7 +51,8 @@ body {
   }
   
   .btn:hover, .btn:focus {
-    background-color: hsl(30, 100%, 40%);
+    transform: scale(1.1);
+    transition: 0.3s;
   }
   
   .splash-btn {
@@ -59,6 +62,10 @@ body {
   
   .splash-btn:first-child {
     margin-left: 0;
+  }
+
+  #restart{
+    display: none;
   }
   
   .container {
@@ -78,6 +85,7 @@ body {
   .grid-computer > .taken,
   .grid-computer > .boom {
     background-color: hsl(23, 100%, 50%) !important;
+    // background-color: hsl(200, 100%, 50%) !important;
     border-radius: 0 !important;
   }
   
@@ -165,7 +173,8 @@ body {
   }
   
   .grid-display {
-    display: flex;
+    // display: flex;
+    display: none;
     flex-wrap: wrap;
   }
   
@@ -239,14 +248,16 @@ body {
   }
   
   .miss,
-  .boom {
+  .boom,
+  .help {
     display: flex;
     justify-content: center;
     align-items: center;
   }
   
   .boom::after,
-  .miss::after {
+  .miss::after,
+  .help::after {
     content: '';
     position: absolute;
     border-radius: 100%;
@@ -261,8 +272,11 @@ body {
   .boom::after {
     background-color: red;
   }
+  .help::after{
+    background-color: green;
+  }
   
-  .miss::before {
+  .miss::before,.help::before {
     content: '';
     position: absolute;
     animation: hit .2s ease-out forwards;
@@ -271,6 +285,8 @@ body {
     width: 2vmin;
     height: 2vmin;
   }
+
+
   
   .boom {
     animation: boom .2s ease-out forwards;
