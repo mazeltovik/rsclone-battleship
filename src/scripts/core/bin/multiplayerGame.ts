@@ -70,7 +70,7 @@ export default class MultiplayerGame {
     messageContainer;
     messageForm;
     messageInput;
-    btnRotate;
+    // btnRotate;
     constructor() {
         this.userGrid = document.querySelector(SELECTORS.userGrid) as HTMLDivElement;
         this.enemyGrid = document.querySelector(SELECTORS.enemyGrid) as HTMLDivElement;
