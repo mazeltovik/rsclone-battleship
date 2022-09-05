@@ -1,6 +1,7 @@
 const SELECTORS = {
     userGrid: '.grid-user',
     computerGrid: '.grid-computer',
+    enemyGrid: '.grid-enemy',
     displayGrid: '.grid-display',
     ships: '.ship',
     doubleDeckContainer: '.doubleDeck-container',
