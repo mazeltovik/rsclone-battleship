@@ -64,13 +64,13 @@ class Animation {
         }
         setTimeout(() => {
             fade(animation);
-            sessionStorage.setItem('LogoAnimationWas', 'true');
+            localStorage.setItem('LogoAnimationWas', 'true');
         }, 4500);
         animateCanvas();
         fadeIn(p, 4500);
     }
     static start() {
-        if (!sessionStorage.getItem('LogoAnimationWas')) this.animation();
+        if (!localStorage.getItem('LogoAnimationWas')) this.animation();
     }
 }
 
