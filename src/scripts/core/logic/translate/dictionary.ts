@@ -29,6 +29,11 @@ const dictionary: { [key: string]: { [key: string]: string } } = {
         undyingname: 'Undying...',
         undyinginfo: 'Win a game without losing ships.',
         earnedachivetitle: 'You earned an achive:',
+        buttonStartGame: 'Start Game',
+        buttonDragDrop: 'Drag & Drop',
+        buttonRandomPlaceShips: 'Random Place Ships',
+        buttonRestart: 'Restart',
+        startText: 'Please place all ships',
     },
     ru: {
         menu: 'Меню',
@@ -60,6 +65,11 @@ const dictionary: { [key: string]: { [key: string]: string } } = {
         undyingname: 'Бессмертный...',
         undyinginfo: 'Выиграйте игру без потери кораблей.',
         earnedachivetitle: 'Вы поулчили достижение:',
+        buttonStartGame: 'Начать Игру',
+        buttonDragDrop: 'Расстановка',
+        buttonRandomPlaceShips: 'Случайная расстановка',
+        buttonRestart: 'Повтор',
+        startText: 'Пожалуйста расположите корабли',
     },
 };
 

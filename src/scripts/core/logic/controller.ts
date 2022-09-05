@@ -1,6 +1,7 @@
 import SELECTORS from '../../utils/selectors';
 import ClassicGame from '../bin/classicGame';
 import RandomComputerField from './RandomComputerField';
+import Translate from '../logic/translate/translate';
 
 type SquadronOptions = {
     arrDecks: number[][];
@@ -144,9 +145,12 @@ export default class Controller {
                 break;
             case 3: // повторный обстрел
             case 4:
-                this.turnDisplay.textContent = "You've already fired at these coordinates!";
+                this.turnDisplay.textContent = Translate.translateHTML(
+                    "You've already fired at these coordinates!",
+                    'Вы уже стреляли в эту координату'
+                );
                 setTimeout(() => {
-                    this.turnDisplay.textContent = 'You Go';
+                    this.turnDisplay.textContent = Translate.translateHTML('You Go', 'Вы ходите');
                 }, 1000);
                 break;
         }
@@ -174,14 +178,20 @@ export default class Controller {
         this.opponent[x][y] = 3; //промах
         // console.log(this.opponent);
         if (this.player === this.humanMatrix) {
-            this.turnDisplay.textContent = 'You Miss, Computer Go';
+            this.turnDisplay.textContent = Translate.translateHTML(
+                'You Miss, Computer Go',
+                'Вы Промахнулись, Компьютер ходит'
+            );
             this.player = this.compMatrix;
             this.opponent = this.humanMatrix;
             this.compShot = true;
             this.computerField[id].classList.add('miss');
             setTimeout(() => this.makeShot(), 1000);
         } else {
-            this.turnDisplay.textContent = 'Computer Miss, You Go';
+            this.turnDisplay.textContent = Translate.translateHTML(
+                'Computer Miss, You Go',
+                'Компьютер промахнулся, вы ходите'
+            );
             if (this.coordsAroundHit.length == 0 && this.tempShip.hits > 0) {
                 // корабль потоплен, отмечаем useless cell вокруг него
                 this.markUselessCellAroundShip();
@@ -195,7 +205,7 @@ export default class Controller {
     }
     showInfo(info: string) {
         let sunkShip = document.querySelector(SELECTORS.info) as HTMLHeadingElement;
-        sunkShip.textContent = `You sunk ${info}`;
+        sunkShip.textContent = `${Translate.translateHTML('You sunk', 'Вы потопили')} ${info}`;
         setTimeout(() => {
             sunkShip.textContent = '';
         }, 3000);
@@ -236,9 +246,9 @@ export default class Controller {
         if (Object.keys(squadron).length == 0) {
             if (this.opponent === this.humanMatrix) {
                 this.userField[id].classList.add('boom');
-                this.turnDisplay.textContent = 'You Lose!';
+                this.turnDisplay.textContent = Translate.translateHTML('You Lose!', 'Вы Проиграли!');
             } else {
-                this.turnDisplay.textContent = 'You Won!';
+                this.turnDisplay.textContent = Translate.translateHTML('You Won!', 'Вы Выиграли');
             }
             if (location.hash == '#classic-page') {
                 const buttonReset = document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement;
@@ -249,7 +259,10 @@ export default class Controller {
                 });
             }
             if (location.hash == '#single-player-page') {
-                this.turnDisplay.textContent += ' You complete this level, try another';
+                this.turnDisplay.textContent += Translate.translateHTML(
+                    ' You complete this level, try another',
+                    ' Вы завершили этот уровень, попробуйте другой'
+                );
             }
             this.computerGrid.removeEventListener('click', this.listenerMakeShot);
         } else if (this.opponent === this.humanMatrix) {
@@ -448,9 +461,9 @@ export default class Controller {
         }
         if (this.player === this.humanMatrix) {
             this.compShot = false;
-            this.turnDisplay.textContent = 'You Go';
+            this.turnDisplay.textContent = Translate.translateHTML('You Go', 'Ваш Ход');
         } else {
-            this.turnDisplay.textContent = 'Computer Go';
+            this.turnDisplay.textContent = Translate.translateHTML('Computer Go', 'Ход Компьютера');
             this.compShot = true;
             setTimeout(() => this.makeShot(), 1000);
         }
