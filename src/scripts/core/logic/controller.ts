@@ -220,7 +220,7 @@ export default class Controller {
                 this.computerField[id].classList.remove('help');
             }
             this.computerField[id].classList.add('boom');
-            // Achives.earnAchiveNotification('youdidit');
+            Achives.earnAchiveNotification('youdidit');
         } else {
             squadron = this.humanSquadron;
         }
@@ -252,6 +252,7 @@ export default class Controller {
                 this.turnDisplay.textContent = Translate.translateHTML('You Won!', 'Вы Выиграли');
             }
             if (location.hash == '#classic-page') {
+                Achives.earnAchiveNotification('blackspot');
                 const buttonReset = document.querySelector(SELECTORS.btnRestart) as HTMLButtonElement;
                 buttonReset.style.display = 'block';
                 buttonReset.addEventListener('click', () => {
@@ -260,6 +261,7 @@ export default class Controller {
                 });
             }
             if (location.hash == '#single-player-page') {
+                Achives.earnAchiveNotification('pirate');
                 this.turnDisplay.textContent += Translate.translateHTML(
                     ' You complete this level, try another',
                     ' Вы завершили этот уровень, попробуйте другой'
