@@ -74,7 +74,6 @@ export default class MultiplayerGame {
     constructor() {
         this.userGrid = document.querySelector(SELECTORS.userGrid) as HTMLDivElement;
         this.enemyGrid = document.querySelector(SELECTORS.enemyGrid) as HTMLDivElement;
-        this.btnRotate = document.querySelector(SELECTORS.rotateButton) as HTMLButtonElement;
         this.ships = document.querySelectorAll(SELECTORS.ships);
         this.enemyField = [];
         this.messageContainer = document.getElementById('message-container') as HTMLDivElement;
@@ -125,7 +124,6 @@ export default class MultiplayerGame {
     }
 
     btnClickRotate() {
-        this.btnRotate.addEventListener('click', this.rotate);
         document.addEventListener('keydown', (e) => {
             if (e.key == 'Control') this.rotate();
         });
