@@ -1,5 +1,48 @@
 export default function multiplayerGameHTML(elem: HTMLElement) {
     elem.innerHTML = `
+    <style>
+    .chat{
+      margin-right:1rem;
+      position:relative;
+      height:50%;
+      width: 15%;
+      margin-left: auto;
+      bottom: 43%;
+      
+    }
+    #message-container {
+      width:100%;
+      position:absolute;
+      max-width: 1200px;
+      height: 92%;
+      overflow-y: scroll;
+    }
+
+    #message-container div {
+      background-color: #CCC;
+      padding: 5px;
+    }
+
+    #message-container div:nth-child(2n) {
+      background-color: #FFF;
+    }
+
+    #send-container {
+      width:100%;
+      position:absolute;
+      padding-bottom: 30px;
+      bottom: 0;
+      background-color: white;
+      display: flex;
+    }
+
+    #message-input {
+      flex-grow: 1;
+    }
+    #send-button{
+      height:35px;
+    }
+  </style>
   <div class="multiplayer-container">
     <div class="multiplayer-container__block">
         <h2 class="multiplayer-container__title">Player</h2>
@@ -39,6 +82,13 @@ export default function multiplayerGameHTML(elem: HTMLElement) {
       <div class="ship tripleDeck-container" id = tripledeck2 draggable="true"><div id="tripleDeck-0"></div><div id="tripleDeck-1"></div><div id="tripleDeck-2"></div></div>
       <div class="ship fourDeck-container" id = fourdeck1 draggable="true"><div id="fourDeck-0"></div><div id="fourDeck-1"></div><div id="fourDeck-2"></div><div id="fourDeck-3"></div></div>
     </div>
+  </div>
+  <div class='chat'>
+  <div id="message-container"></div>
+  <form id="send-container">
+    <input type="text" id="message-input">
+    <button type="submit" id="send-button">Send</button>
+  </form>
   </div>
     `;
 }

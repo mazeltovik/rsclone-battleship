@@ -67,14 +67,18 @@ export default class MultiplayerGame {
     isEnemyReady: boolean;
     // isShipsPlaced: boolean;
     currentPlayer: string;
-
+    messageContainer;
+    messageForm;
+    messageInput;
     constructor() {
         this.userGrid = document.querySelector(SELECTORS.userGrid) as HTMLDivElement;
         this.enemyGrid = document.querySelector(SELECTORS.enemyGrid) as HTMLDivElement;
         this.btnRotate = document.querySelector(SELECTORS.rotateButton) as HTMLButtonElement;
         this.ships = document.querySelectorAll(SELECTORS.ships);
         this.enemyField = [];
-
+        this.messageContainer = document.getElementById('message-container') as HTMLDivElement;
+        this.messageForm = document.getElementById('send-container') as HTMLFormElement;
+        this.messageInput = document.getElementById('message-input') as HTMLInputElement;
         // * =====================================================
 
         this.socket = io('http://localhost:3000/');
@@ -374,6 +378,12 @@ export default class MultiplayerGame {
         element.innerHTML = `${this.currentPlayer} go...`;
     }
 
+    appendMessage(message: string) {
+        const messageElem = document.createElement('div');
+        messageElem.textContent = message;
+        this.messageContainer.append(messageElem);
+    }
+
     start() {
         this.createField(this.userGrid, MultiplayerGame.userField);
         this.createField(this.enemyGrid, this.enemyField);
@@ -461,6 +471,24 @@ export default class MultiplayerGame {
             }
 
             this.showWhoGo();
+        });
+
+        this.messageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let message = this.messageInput.value;
+            this.appendMessage(`You: ${message}`);
+            this.socket.emit('send-chat-message', message);
+            this.messageInput.value = '';
+        });
+        this.socket.on('chat-message', (data) => {
+            this.appendMessage(`${data.name}: ${data.message}`);
+        });
+        this.socket.on('user-connected', (name) => {
+            this.appendMessage(name);
+        });
+        this.socket.emit('new-user', name);
+        this.socket.on('user-connected', (name) => {
+            this.appendMessage(`${name} connected`);
         });
     }
 }
