@@ -287,7 +287,12 @@ export default class MultiplayerGame {
             } else return;
 
             MultiplayerGame.displayGrid.removeChild(MultiplayerGame.draggedShip);
-            if (!MultiplayerGame.displayGrid.querySelector('.ship')) MultiplayerGame.allShipsPlaced = true;
+            if (!MultiplayerGame.displayGrid.querySelector('.ship')) {
+                MultiplayerGame.allShipsPlaced = true;
+                const startButton = document.querySelector('#start') as HTMLButtonElement;
+                startButton.removeAttribute('disabled');
+                startButton.classList.remove('disabled');
+            }
             if (MultiplayerGame.isHorizontal) {
                 let idVertical = parseInt(String(this.dataset.id)) - selectedShipIndex;
                 kx = 0;
@@ -350,12 +355,23 @@ export default class MultiplayerGame {
     }
 
     playerReady() {
-        document.querySelector('#start')?.addEventListener('click', () => {
+        const startButton = document.querySelector('#start') as HTMLButtonElement;
+        startButton.addEventListener('click', () => {
             console.log('You are ready');
-
-            this.socket.emit('player-ready');
+            startButton.setAttribute('disabled', 'disabled');
+            startButton.classList.add('disabled');
             this.isReady = true;
+            const status = document.querySelector('.player-ready') as HTMLElement;
+            status.innerHTML = 'ready';
+            status.classList.add('active');
+            this.socket.emit('player-ready');
+            if (this.isReady && this.isEnemyReady) this.showWhoGo();
         });
+    }
+
+    showWhoGo() {
+        const element = document.querySelector('#whose-go') as HTMLElement;
+        element.innerHTML = `${this.currentPlayer} go...`;
     }
 
     start() {
@@ -379,7 +395,11 @@ export default class MultiplayerGame {
         this.socket.on('enemy-ready', (string: string) => {
             this.isEnemyReady = true;
             console.log(string);
-            // todo: решить как реализовать на странице
+            const status = document.querySelector('.enemy-ready') as HTMLElement;
+            status.innerHTML = 'ready';
+            status.classList.add('active');
+            this.socket.emit('enemy-ready');
+            if (this.isReady && this.isEnemyReady) this.showWhoGo();
         });
 
         this.socket.on('check-players', (players: string[]) => {
@@ -394,6 +414,7 @@ export default class MultiplayerGame {
                     element.innerHTML = 'disconnected';
                 }
             }
+            if (this.isReady && this.isEnemyReady) this.showWhoGo();
         });
 
         window.addEventListener('hashchange', () => {
@@ -407,20 +428,39 @@ export default class MultiplayerGame {
             if (this.currentPlayer === 'user' && this.isReady && this.isEnemyReady) {
                 const shotFired: string = target.dataset.id as string;
                 this.socket.emit('fire', shotFired);
-                this.currentPlayer = 'enemy';
             }
         });
 
-        this.socket.on('fire', (id) => {
-            console.log(`enemy fire ${id}`);
-            // todo: реализовать функционал
-            this.socket.emit('fire-reply', MultiplayerGame.userField[id].dataset.id);
-            this.currentPlayer = 'user';
+        this.socket.on('fire', (id: number) => {
+            const target = MultiplayerGame.userField[id];
+            let reply: 'boom' | 'miss';
+
+            if (target.classList.contains('taken')) {
+                reply = 'boom';
+                this.currentPlayer = 'enemy';
+            } else {
+                reply = 'miss';
+                this.currentPlayer = 'user';
+            }
+
+            this.showWhoGo();
+
+            this.socket.emit('fire-reply', {
+                id: id,
+                reply: reply,
+            });
         });
 
-        this.socket.on('fire-reply', (square) => {
-            console.log(square);
-            // todo: реализовать функционал
+        this.socket.on('fire-reply', (obj: { id: string; reply: string }) => {
+            this.enemyField[parseInt(obj.id)].classList.add(obj.reply);
+
+            if (obj.reply === 'boom') {
+                this.currentPlayer = 'user';
+            } else if (obj.reply === 'miss') {
+                this.currentPlayer = 'enemy';
+            }
+
+            this.showWhoGo();
         });
     }
 }

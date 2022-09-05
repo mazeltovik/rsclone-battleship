@@ -9,7 +9,7 @@ export default function multiplayerGameHTML(elem: HTMLElement) {
     <div class="multiplayer-container__block">
         <h2 class="multiplayer-container__title">Enemy</h2>
         <p class="multiplayer-container__text">Connection: <span class="multiplayer-container__status enemy-connection">disconnected</span></p>
-        <p class="multiplayer-container__text">Ready:<span class="multiplayer-container__status enemy-ready">not ready</span></p>
+        <p class="multiplayer-container__text">Ready: <span class="multiplayer-container__status enemy-ready">not ready</span></p>
     </div>
   </div>
   <div class="container">
@@ -19,10 +19,10 @@ export default function multiplayerGameHTML(elem: HTMLElement) {
 
   <div class="container hidden-info">
     <div class="setup-buttons" id="setup-buttons">
-      <button id="start" class="btn">Start Game</button>
+      <button id="start" class="btn disabled" disabled>Start Game</button>
       <button id="rotate" class="btn">Rotate Your Ships</button>
     </div>
-    <h3 id="whose-go" class="info-text">Your Go</h3>
+    <h3 id="whose-go" class="info-text"></h3>
     <h3 id="info" class="info-text"></h3>
   </div>
 
