@@ -1,4 +1,4 @@
-export default function classicGameHTML(elem: HTMLElement) {
+export default function levelThreeHTML(elem: HTMLElement) {
     elem.innerHTML = `
     <div class="container">
     <div class="battleship-grid grid-user"></div>
@@ -29,7 +29,12 @@ export default function classicGameHTML(elem: HTMLElement) {
       <div class="ship tripleDeck-container" id = tripledeck1 draggable="true"><div id="tripleDeck-0"></div><div id="tripleDeck-1"></div><div id="tripleDeck-2"></div></div>
       <div class="ship tripleDeck-container" id = tripledeck2 draggable="true"><div id="tripleDeck-0"></div><div id="tripleDeck-1"></div><div id="tripleDeck-2"></div></div>
       <div class="ship fourDeck-container" id = fourdeck1 draggable="true"><div id="fourDeck-0"></div><div id="fourDeck-1"></div><div id="fourDeck-2"></div><div id="fourDeck-3"></div></div>
-    </div>
+      </div>
+  </div>
+  <div class = "perks">
+    <p class = "tube tooltip"><p>
+    <p class ="rum tooltip"></p>
+    <p class =  "gun tooltip"></p>
   </div>
     `;
 }

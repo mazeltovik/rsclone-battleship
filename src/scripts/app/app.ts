@@ -8,10 +8,11 @@ import Header from '../core/components/header/header';
 import Footer from '../core/components/footer/footer';
 import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
+import shipsForClassicGame from '../utils/ships';
 import Translate from '../core/logic/translate/translate';
 import MultiplayerGame from '../core/bin/multiplayerGame';
 import Achives from '../core/components/achives/achives';
-
+import LevelRoute from '../core/logic/levelRoute';
 export const enum PageIds {
     MenuPageId = 'menu-page',
     ClassicPageId = 'classic-page',
@@ -46,13 +47,13 @@ class App {
             else Page.gameModeStatusChange('add');
             switch (hash) {
                 case 'classic-page':
-                    new ClassicGame().build();
+                    new ClassicGame(shipsForClassicGame, 10).build();
                     break;
                 case 'multi-player-page':
                     new MultiplayerGame().start();
                     break;
                 case 'single-player-page':
-                    Achives.earnAchiveNotification('blackspot');
+                    new LevelRoute().build();
                     break;
             }
             Translate.translate(sessionStorage.getItem('language') || 'en');
@@ -92,6 +93,10 @@ class App {
         Header.popUpElementsListeners();
         this.enableRouteChange();
         Translate.translate(sessionStorage.getItem('language') || 'en');
+        if (sessionStorage.getItem('restartClassic') === 'true') {
+            (<HTMLButtonElement>document.querySelector('#classic-page-button')).click();
+            sessionStorage.setItem('restartClassic', 'false');
+        }
     }
 }
 

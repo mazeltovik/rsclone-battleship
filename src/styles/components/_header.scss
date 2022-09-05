@@ -1,8 +1,8 @@
 .header-container {
   height: 0px;
-  &.header-container_game-mode {
-    height: $header-height;
-  }
+  // &.header-container_game-mode {
+  //   height: $header-height;
+  // }
 }
 .header-container__authorization {
   z-index: 1;
