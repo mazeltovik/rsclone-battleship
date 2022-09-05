@@ -287,7 +287,12 @@ export default class MultiplayerGame {
             } else return;
 
             MultiplayerGame.displayGrid.removeChild(MultiplayerGame.draggedShip);
-            if (!MultiplayerGame.displayGrid.querySelector('.ship')) MultiplayerGame.allShipsPlaced = true;
+            if (!MultiplayerGame.displayGrid.querySelector('.ship')) {
+                MultiplayerGame.allShipsPlaced = true;
+                const startButton = document.querySelector('#start') as HTMLButtonElement;
+                startButton.removeAttribute('disabled');
+                startButton.classList.remove('disabled');
+            }
             if (MultiplayerGame.isHorizontal) {
                 let idVertical = parseInt(String(this.dataset.id)) - selectedShipIndex;
                 kx = 0;
@@ -321,8 +326,8 @@ export default class MultiplayerGame {
     // * =========================================================
 
     getPlayerNumber() {
-        this.socket.on('player-number', (num: string) => {
-            const number = parseInt(num);
+        this.socket.on('player-number', (obj: { player: string; status: string }) => {
+            const number = parseInt(obj.player);
             if (number === -1) {
                 console.log('Server is full');
                 //todo: решить как реализовать на странице
@@ -332,21 +337,41 @@ export default class MultiplayerGame {
 
                 console.log(`Your player number is ${this.playerNumber}`);
             }
+            this.controlPlayerConnection(obj);
+            this.socket.emit('check-players');
         });
     }
 
-    controlPlayerConnection(string: string) {
-        console.log(`Player ${string}`);
-        //todo: решить как реализовать на странице
+    controlPlayerConnection(obj: { player: string; status: string }) {
+        const statusSelector = parseInt(obj.player) !== this.playerNumber ? 'enemy' : 'player';
+        const element = document.querySelector(`.${statusSelector}-connection`) as Element;
+        if (obj.status === 'connected') {
+            element.classList.add('active');
+            element.innerHTML = 'connected';
+        } else if (obj.status === 'disconnected') {
+            element.classList.remove('active');
+            element.innerHTML = 'disconnected';
+        }
     }
 
     playerReady() {
-        document.querySelector('#start')?.addEventListener('click', () => {
+        const startButton = document.querySelector('#start') as HTMLButtonElement;
+        startButton.addEventListener('click', () => {
             console.log('You are ready');
-
-            this.socket.emit('player-ready');
+            startButton.setAttribute('disabled', 'disabled');
+            startButton.classList.add('disabled');
             this.isReady = true;
+            const status = document.querySelector('.player-ready') as HTMLElement;
+            status.innerHTML = 'ready';
+            status.classList.add('active');
+            this.socket.emit('player-ready');
+            if (this.isReady && this.isEnemyReady) this.showWhoGo();
         });
+    }
+
+    showWhoGo() {
+        const element = document.querySelector('#whose-go') as HTMLElement;
+        element.innerHTML = `${this.currentPlayer} go...`;
     }
 
     start() {
@@ -361,8 +386,8 @@ export default class MultiplayerGame {
 
         this.getPlayerNumber();
 
-        this.socket.on('player-connection', (string: string) => {
-            this.controlPlayerConnection(string);
+        this.socket.on('player-connection', (obj: { player: string; status: string }) => {
+            this.controlPlayerConnection(obj);
         });
 
         this.playerReady();
@@ -370,7 +395,26 @@ export default class MultiplayerGame {
         this.socket.on('enemy-ready', (string: string) => {
             this.isEnemyReady = true;
             console.log(string);
-            // todo: решить как реализовать на странице
+            const status = document.querySelector('.enemy-ready') as HTMLElement;
+            status.innerHTML = 'ready';
+            status.classList.add('active');
+            this.socket.emit('enemy-ready');
+            if (this.isReady && this.isEnemyReady) this.showWhoGo();
+        });
+
+        this.socket.on('check-players', (players: string[]) => {
+            for (let i = 0; i < players.length; i++) {
+                const statusSelector = i !== this.playerNumber ? 'enemy' : 'player';
+                const element = document.querySelector(`.${statusSelector}-connection`) as Element;
+                if (players[i] === 'connected') {
+                    element.classList.add('active');
+                    element.innerHTML = 'connected';
+                } else if (players[i] === 'disconnected') {
+                    element.classList.remove('active');
+                    element.innerHTML = 'disconnected';
+                }
+            }
+            if (this.isReady && this.isEnemyReady) this.showWhoGo();
         });
 
         window.addEventListener('hashchange', () => {
@@ -384,20 +428,39 @@ export default class MultiplayerGame {
             if (this.currentPlayer === 'user' && this.isReady && this.isEnemyReady) {
                 const shotFired: string = target.dataset.id as string;
                 this.socket.emit('fire', shotFired);
-                this.currentPlayer = 'enemy';
             }
         });
 
-        this.socket.on('fire', (id) => {
-            console.log(`enemy fire ${id}`);
-            // todo: реализовать функционал
-            this.socket.emit('fire-reply', MultiplayerGame.userField[id].dataset.id);
-            this.currentPlayer = 'user';
+        this.socket.on('fire', (id: number) => {
+            const target = MultiplayerGame.userField[id];
+            let reply: 'boom' | 'miss';
+
+            if (target.classList.contains('taken')) {
+                reply = 'boom';
+                this.currentPlayer = 'enemy';
+            } else {
+                reply = 'miss';
+                this.currentPlayer = 'user';
+            }
+
+            this.showWhoGo();
+
+            this.socket.emit('fire-reply', {
+                id: id,
+                reply: reply,
+            });
         });
 
-        this.socket.on('fire-reply', (square) => {
-            console.log(square);
-            // todo: реализовать функционал
+        this.socket.on('fire-reply', (obj: { id: string; reply: string }) => {
+            this.enemyField[parseInt(obj.id)].classList.add(obj.reply);
+
+            if (obj.reply === 'boom') {
+                this.currentPlayer = 'user';
+            } else if (obj.reply === 'miss') {
+                this.currentPlayer = 'enemy';
+            }
+
+            this.showWhoGo();
         });
     }
 }

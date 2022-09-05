@@ -1,0 +1,29 @@
+.multiplayer-container {
+    @include flex();
+    justify-content: center;
+    gap: 4vmin;
+    padding: 2vmin;
+
+    &__block {
+        @include flex(column);
+        gap: 10px;
+        width: 292px;
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    &__text {
+        font-size: 20px;
+    }
+
+    &__status {
+        color: #ff0000;
+
+        &.active {
+            color: #14ca14;
+        }
+    }
+}
