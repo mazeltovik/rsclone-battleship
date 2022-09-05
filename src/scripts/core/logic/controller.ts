@@ -220,7 +220,7 @@ export default class Controller {
                 this.computerField[id].classList.remove('help');
             }
             this.computerField[id].classList.add('boom');
-            Achives.earnAchiveNotification('youdidit');
+            // Achives.earnAchiveNotification('youdidit');
         } else {
             squadron = this.humanSquadron;
         }
