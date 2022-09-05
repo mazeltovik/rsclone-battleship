@@ -99,7 +99,6 @@ export default class ClassicGame {
     // userField: HTMLDivElement[];
     computerField: HTMLDivElement[];
     ships;
-    btnRotate;
     computer: RandomComputerField;
     btnStart;
     btnRandom;
@@ -117,10 +116,10 @@ export default class ClassicGame {
     matrix: number[][];
     squadron: Squadron;
     turnDisplay!: HTMLHeadingElement;
+    info: HTMLHeadingElement;
     constructor(public shipsForRandom: Ships, public amount: number) {
         this.userGrid = document.querySelector(SELECTORS.userGrid) as HTMLDivElement;
         this.computerGrid = document.querySelector(SELECTORS.computerGrid) as HTMLDivElement;
-        this.btnRotate = document.querySelector(SELECTORS.rotateButton) as HTMLButtonElement;
         this.ships = document.querySelectorAll(SELECTORS.ships);
         // this.userField = [];
         this.computerField = [];
@@ -134,6 +133,7 @@ export default class ClassicGame {
         this.allShipsPlaced = false;
         this.set = new Set();
         this.userField = [];
+        this.info = document.querySelector(SELECTORS.info) as HTMLHeadingElement;
         this.matrix = [...Array(10)].map(() => Array(10).fill(0));
         this.squadron = {};
         this.computer = new RandomComputerField(this.shipsForRandom, 10);
@@ -236,7 +236,6 @@ export default class ClassicGame {
     }
     // Поворот кораблей при нажатие на Ctrl
     btnClickRotate() {
-        this.btnRotate.addEventListener('click', this.rotate);
         document.addEventListener('keydown', (e) => {
             if (e.key == 'Control') this.rotate();
         });
@@ -251,9 +250,9 @@ export default class ClassicGame {
                     v.classList.remove('red');
                 });
                 this.btnStart.style.display = 'none';
-                this.btnRotate.style.display = 'none';
                 this.btnRandom.style.display = 'none';
                 this.btnDrop.style.display = 'none';
+                this.info.textContent = '';
             } else {
                 return;
             }
@@ -266,13 +265,13 @@ export default class ClassicGame {
         this.btnDrop.addEventListener('click', (e) => {
             this.btnRandom.style.display = 'none';
             this.displayGrid.style.display = 'flex';
+            this.info.textContent = 'Use CTRL button to rotate your ships';
         });
     }
 
     // Рандомная растановка для поля игрока
     randomBtnClick() {
         this.btnRandom.addEventListener('click', (e) => {
-            this.btnRotate.style.display = 'none';
             this.btnRandom.style.display = 'none';
             this.btnDrop.style.display = 'none';
             this.randomLocationShips();
@@ -605,8 +604,6 @@ export default class ClassicGame {
         this.btnClickRotate();
         //Создаем матрицу с кораблями для компьютера
         this.computer.randomLocationShips();
-        console.log(this.computer.matrix);
-        console.log(this.computer.squadron);
         this.generateComputerClass();
         // Вешаем обработчики drag&drop
         this.moveAround();
