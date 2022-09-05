@@ -16,6 +16,7 @@ const SELECTORS = {
     btnRandom: '#random',
     btnDrop: '#drop',
     btnRestart: '#restart',
+    rotateButton: '#rotate',
     info: '#info',
     levelRoute: '.level_container',
     currentPage: '#current-page',

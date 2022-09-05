@@ -2,7 +2,7 @@ import SELECTORS from '../../utils/selectors';
 import ClassicGame from '../bin/classicGame';
 import RandomComputerField from './RandomComputerField';
 import Translate from '../logic/translate/translate';
-
+import Achives from '../components/achives/achives';
 type SquadronOptions = {
     arrDecks: number[][];
     hits: number;
@@ -220,6 +220,7 @@ export default class Controller {
                 this.computerField[id].classList.remove('help');
             }
             this.computerField[id].classList.add('boom');
+            // Achives.earnAchiveNotification('youdidit');
         } else {
             squadron = this.humanSquadron;
         }

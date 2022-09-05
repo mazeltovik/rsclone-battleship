@@ -249,14 +249,15 @@ body {
 }
 
 .miss,
-.boom {
+.boom,.help {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .boom::after,
-.miss::after {
+.miss::after,
+.help::after {
     content: '';
     position: absolute;
     border-radius: 100%;
@@ -272,7 +273,12 @@ body {
     background-color: red;
 }
 
-.miss::before {
+.help::after{
+  background-color: green;
+}
+
+.miss::before,
+.help::before {
     content: '';
     position: absolute;
     animation: hit .2s ease-out forwards;
@@ -283,8 +289,12 @@ body {
 
 }
 
-.boom {
+.boom{
     animation: boom .2s ease-out forwards;
+}
+
+#restart{
+  display:none;
 }
 
 @keyframes hit {

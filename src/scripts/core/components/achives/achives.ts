@@ -5,7 +5,7 @@ import bottle from '../../../../assets/svg/bottle.svg';
 import undying from '../../../../assets/svg/undying.svg';
 import unFadeWithFade from '../../logic/functions';
 import App from '../../../app/app';
-
+import Translate from '../../logic/translate/translate';
 export const achivesImages: { [key: string]: '*.svg' } = {
     youdidit: gun,
     blackspot: blackspot,
@@ -69,6 +69,7 @@ class Achives {
             unFadeWithFade(container);
             container.append(title, achiveHTML);
             body.append(container);
+            Translate.translate(sessionStorage.getItem('language') || 'en');
         }
     }
 }
