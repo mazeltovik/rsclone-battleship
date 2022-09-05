@@ -12,6 +12,8 @@ import shipsForClassicGame from '../utils/ships';
 import Translate from '../core/logic/translate/translate';
 import Achives from '../core/components/achives/achives';
 import LevelRoute from '../core/logic/levelRoute';
+import Animation from '../core/components/studioAnimation/animation';
+
 export const enum PageIds {
     MenuPageId = 'menu-page',
     ClassicPageId = 'classic-page',
@@ -83,6 +85,7 @@ class App {
     }
 
     run() {
+        Animation.start();
         this.replaceHash();
         App.container.append(this.header.render(), App.renderNewPage('menu-page'), this.footer.render());
         this.burger.burgerHandler();

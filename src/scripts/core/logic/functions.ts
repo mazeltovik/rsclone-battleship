@@ -1,4 +1,4 @@
-const fade = (target: HTMLElement) => {
+export const fade = (target: HTMLElement) => {
     target.style.opacity = String(Number(target.style.opacity) - 0.1);
     if (Number(target.style.opacity) > 0) {
         setTimeout(() => fade(target), 100);
