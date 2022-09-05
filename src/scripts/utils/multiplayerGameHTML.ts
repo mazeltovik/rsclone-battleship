@@ -2,20 +2,21 @@ export default function multiplayerGameHTML(elem: HTMLElement) {
     elem.innerHTML = `
     <style>
     .chat{
-      margin-right:1rem;
-      position:relative;
-      height:50%;
-      width: 15%;
-      margin-left: auto;
-      bottom: 43%;
+      margin-right: 1rem;
+    position: relative;
+    height: 30%;
+    width: 15%;
+    margin-left: auto;
+    bottom: 22%;
       
     }
     #message-container {
       width:100%;
       position:absolute;
       max-width: 1200px;
-      height: 92%;
+      height: 70%;
       overflow-y: scroll;
+      background-color:white;
     }
 
     #message-container div {
