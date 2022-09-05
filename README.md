@@ -7,3 +7,4 @@
 -   Install dependencies: $ npm install.
 -   Start server: $ npm start.
 -   Build: $ npm run build.
+-   Before push your updates run Lint: $ npm run lint.

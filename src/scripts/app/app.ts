@@ -10,6 +10,7 @@ import Burger from '../core/components/header/burger/burger';
 import ClassicGame from '../core/bin/classicGame';
 import shipsForClassicGame from '../utils/ships';
 import Translate from '../core/logic/translate/translate';
+import MultiplayerGame from '../core/bin/multiplayerGame';
 import Achives from '../core/components/achives/achives';
 import LevelRoute from '../core/logic/levelRoute';
 export const enum PageIds {
@@ -47,6 +48,9 @@ class App {
             switch (hash) {
                 case 'classic-page':
                     new ClassicGame(shipsForClassicGame, 10).build();
+                    break;
+                case 'multi-player-page':
+                    new MultiplayerGame().start();
                     break;
                 case 'single-player-page':
                     new LevelRoute().build();
