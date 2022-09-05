@@ -1,3 +1,4 @@
+import App from '../../../../app/app';
 import Component from '../../../templates/component';
 
 class AudioPlayer extends Component {
@@ -28,6 +29,10 @@ class AudioPlayer extends Component {
         slider.addEventListener('input', (event) => {
             const volume = Number((event.target as HTMLInputElement).value);
             sessionStorage.setItem('volume', String(volume));
+            if (App.user) {
+                App.user.options.volume = String(volume);
+                sessionStorage.setItem('user', JSON.stringify(App.user));
+            }
             (audioPlayer as HTMLAudioElement).volume = volume / 100;
         });
         slider.value = sessionStorage.getItem('volume') || '50';

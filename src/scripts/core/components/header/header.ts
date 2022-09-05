@@ -8,6 +8,7 @@ import AudioPlayer from './audio-player/audioPlayer';
 import Authorization from './authorization/authorization';
 import Translate from '../../logic/translate/translate';
 import Achives from '../achives/achives';
+import Leaders from '../leaders/leaders';
 
 const obj: { [key: string]: string } = {
     options,
@@ -68,7 +69,7 @@ class Header extends Component {
         const popUpWindow = <Element>document.querySelector('.pop-up-window');
 
         for (const target in targets) {
-            targets[target].addEventListener('click', (event) => {
+            targets[target].addEventListener('click', async (event) => {
                 popUpWindow.classList.add('pop-up-window_active');
                 popUpWindow.innerHTML = '';
                 const target = <Element>document.querySelector('.pop-up-window');
@@ -88,7 +89,7 @@ class Header extends Component {
                         target.append(Header.createPopUpTitle('achives'), ...Achives.createAchivesBlocks());
                         break;
                     case targets.leaderboard:
-                        target.append(Header.createPopUpTitle('leaderboard'));
+                        target.append(Header.createPopUpTitle('leaderboard'), ...(await Leaders.addLeaders()));
                         break;
                 }
                 Translate.translate(sessionStorage.getItem('language') || 'en');

@@ -1,0 +1,13 @@
+.leaders-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__item {
+    width: 80%;
+    height: 50%;
+    display: flex;
+    justify-content: space-between;
+  }
+}
