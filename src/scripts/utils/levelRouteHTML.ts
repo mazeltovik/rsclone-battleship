@@ -1,9 +1,9 @@
 export default function LevelRouteHTML(elem: HTMLElement) {
     elem.innerHTML = `
     <div class="level_container">
-    <button class = 'level'>Level 1</button>
-    <button class = 'level'>Level 2</button>
-    <button class = 'level'>Level 3</button>
+    <button data-language="level1" class = 'level'></button>
+    <button data-language="level2" class = 'level'></button>
+    <button data-language="level3" class = 'level'></button>
   </div>
     `;
 }

@@ -54,6 +54,7 @@ class App {
                     break;
                 case 'single-player-page':
                     new LevelRoute().build();
+                    Translate.translate(sessionStorage.getItem('language') || 'en');
                     break;
             }
             Translate.translate(sessionStorage.getItem('language') || 'en');

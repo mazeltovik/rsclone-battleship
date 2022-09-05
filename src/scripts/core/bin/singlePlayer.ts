@@ -5,6 +5,7 @@ import SELECTORS from '../../utils/selectors';
 import tube from '../../utils/tube';
 import bottle from '../../utils/bottle';
 import gun from '../../utils/gun';
+import Translate from '../logic/translate/translate';
 type Ship = {
     name: string;
     directions: number[][];
@@ -39,11 +40,26 @@ export default class SinglePlayer extends ClassicGame {
     }
     renderPerks() {
         this.tubeElem.innerHTML = tube;
-        this.createToolSpan(this.tubeElem, 'Shows one of the decks of an enemy ship');
+        this.createToolSpan(
+            this.tubeElem,
+            Translate.translateHTML(
+                'Shows one of the decks of an enemy ship',
+                'Показывает один сегмент вражеского корабля'
+            )
+        );
         this.bottleRum.innerHTML = bottle;
-        this.createToolSpan(this.bottleRum, 'Yyyyeee baby, its rum!');
+        this.createToolSpan(
+            this.bottleRum,
+            Translate.translateHTML('Yyyyeee baby, its rum!', 'Ееееееее, детка, это ром!')
+        );
         this.gunElem.innerHTML = gun;
-        this.createToolSpan(this.gunElem, 'Shows three coordinates, one of which is the deck of the ship');
+        this.createToolSpan(
+            this.gunElem,
+            Translate.translateHTML(
+                'Shows three coordinates, one of which is the deck of the ship',
+                'Показывает три координаты, одна из которых - вражеский корабль'
+            )
+        );
     }
     perksEvent() {
         this.tubeElem.addEventListener('click', this.helpHandler.bind(this));

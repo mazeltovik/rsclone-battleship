@@ -34,6 +34,9 @@ const dictionary: { [key: string]: { [key: string]: string } } = {
         buttonRandomPlaceShips: 'Random Place Ships',
         buttonRestart: 'Restart',
         startText: 'Please place all ships',
+        level1: 'Level 1',
+        level2: 'Level 2',
+        level3: 'Level 3',
     },
     ru: {
         menu: 'Меню',
@@ -70,6 +73,9 @@ const dictionary: { [key: string]: { [key: string]: string } } = {
         buttonRandomPlaceShips: 'Случайная расстановка',
         buttonRestart: 'Повтор',
         startText: 'Пожалуйста расположите корабли',
+        level1: 'Уровень 1',
+        level2: 'Уровень 2',
+        level3: 'Уровень 3',
     },
 };
 

@@ -7,10 +7,10 @@ export default function levelOneHTML(elem: HTMLElement) {
 
   <div class="container hidden-info">
     <div class="setup-buttons" id="setup-buttons">
-      <button id="start" class="btn">Start Game</button>
-      <button id="drop" class="btn">Drag & Drop</button>
-      <button id="random" class="btn">Random Place Ships</button>
-      <button id="restart" class="btn">Restart</button>
+      <button id="start" data-language="buttonStartGame" class="btn"></button>
+      <button id="drop" data-language="buttonDragDrop" class="btn"></button>
+      <button id="random" data-language="buttonRandomPlaceShips" class="btn"></button>
+      <button id="restart" data-language="buttonRestart" class="btn"></button>
     </div>
     <h3 id="whose-go" class="info-text">Please place all ships</h3>
     <h3 id="info" class="info-text"></h3>
