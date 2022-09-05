@@ -80,8 +80,6 @@ export default class MultiplayerGame {
         this.messageContainer = document.getElementById('message-container') as HTMLDivElement;
         this.messageForm = document.getElementById('send-container') as HTMLFormElement;
         this.messageInput = document.getElementById('message-input') as HTMLInputElement;
-        // * =====================================================
-
         this.socket = io('http://localhost:3000/');
         this.currentPlayer = 'user';
         this.playerNumber = 0;
